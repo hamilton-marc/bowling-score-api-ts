@@ -1,0 +1,39 @@
+{
+  "name": "bowling-api-ts",
+  "version": "0.0.1",
+  "description": "Bowling API and Console App",
+  "main": "dist/index.js",
+  "types": "dist/index.js",
+  "scripts": {
+    "test": "jest",
+    "test:bdd": "cucumber-js -p default",
+    "start": "ts-node src/index.ts",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/unionhillssoftware/bowling-api-ts.git"
+  },
+  "author": "Marc Hamilton",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/unionhillssoftware/bowling-api-ts#readme",
+  "devDependencies": {
+    "@cucumber/cucumber": "^7.2.1",
+    "@cucumber/pretty-formatter": "^1.0.0-alpha.0",
+    "@types/express": "^4.17.12",
+    "@types/jest": "^26.0.23",
+    "@types/node": "^15.12.2",
+    "cucumber-tsflow": "^4.0.0-rc.1",
+    "jest": "^27.0.4",
+    "jest-express": "^1.12.0",
+    "nodemon": "^2.0.7",
+    "ts-jest": "^27.0.3",
+    "ts-node": "^10.0.0",
+    "typescript": "^4.3.2"
+  },
+  "dependencies": {
+    "@overnightjs/core": "^1.7.6",
+    "@overnightjs/logger": "^1.2.1",
+    "express": "^4.17.1"
+  }
+}
