@@ -11,6 +11,15 @@ import { ScoreCard } from '../entities';
     constructor() {
     }
 
+    public computeFrameScore(scoreCard: ScoreCard, frameIndex: number): number {
+        let frameScore: number = 0;
+        const frameThrows: Array<number> = scoreCard.getFrame(frameIndex);
+
+        frameScore = frameThrows[0] + frameThrows[1];
+
+        return frameScore;
+    }
+
     public computeFinalScore(scoreCard: ScoreCard): number {
         let finalScore: number = 0;
 
@@ -24,4 +33,5 @@ import { ScoreCard } from '../entities';
 
         return finalScore;
     }
+
 }
