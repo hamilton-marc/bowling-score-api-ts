@@ -1,4 +1,4 @@
-import { ScoreCard } from '../entities';
+import { ThrowTally } from '../entities';
 
 /**
  * The purpose of this class is to manage the business logic for calculating a bowling score.
@@ -11,20 +11,20 @@ import { ScoreCard } from '../entities';
     constructor() {
     }
 
-    public computeFrameScore(scoreCard: ScoreCard, frameIndex: number): number {
+    public computeFrameScore(throwTally: ThrowTally, frameIndex: number): number {
         let frameScore: number = 0;
-        const frameThrows: Array<number> = scoreCard.getFrame(frameIndex);
+        const frameThrows: Array<number> = throwTally.getFrame(frameIndex);
 
         frameScore = frameThrows[0] + frameThrows[1];
 
         return frameScore;
     }
 
-    public computeFinalScore(scoreCard: ScoreCard): number {
+    public computeFinalScore(throwTally: ThrowTally): number {
         let finalScore: number = 0;
 
-        for (let i: number = 0; i < ScoreCard.MAX_THROWS; i++) {
-            const throwValue: number = scoreCard.getThrow(i);
+        for (let i: number = 0; i < ThrowTally.MAX_THROWS; i++) {
+            const throwValue: number = throwTally.getThrow(i);
 
             if (throwValue >= 0) {
                 finalScore += throwValue; 

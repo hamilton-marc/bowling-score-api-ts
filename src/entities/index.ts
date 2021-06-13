@@ -1,1 +1,1 @@
-export * from './score-card.entity';
+export * from './throw-tally.entity';

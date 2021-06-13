@@ -1,5 +1,6 @@
 /**
- * This class encapsulates and represents the concept of a score card.
+ * This class encapsulates and represents the throws that a player
+ * makes during the course of a game.
  * A score card consits of 10 frames. Each frame contains 2 throws,
  * except for the 10th frame which contains an extra bonus throw
  * for a total of 3 throws.
@@ -7,14 +8,14 @@
  * The implementation is backed by a simple array with methods to get
  * the values for each frame.
  */
-export class ScoreCard {
+export class ThrowTally {
     public static EMPTY_THROW: number = -1;
     public static MAX_FRAMES: number = 10;
 
     // 10 frames * 2 throws + the potential for 1 extra in frame 10
     public static MAX_THROWS: number = 10 * 2 + 1;
 
-    private throws: number[] = new Array(ScoreCard.MAX_THROWS).fill(ScoreCard.EMPTY_THROW);
+    private throws: number[] = new Array(ThrowTally.MAX_THROWS).fill(ThrowTally.EMPTY_THROW);
 
     constructor() {}
 
