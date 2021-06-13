@@ -22,10 +22,12 @@
     "@cucumber/pretty-formatter": "^1.0.0-alpha.0",
     "@types/express": "^4.17.12",
     "@types/jest": "^26.0.23",
+    "@types/lodash": "^4.14.170",
     "@types/node": "^15.12.2",
     "cucumber-tsflow": "^4.0.0-rc.1",
     "jest": "^27.0.4",
     "jest-express": "^1.12.0",
+    "jest-runner-groups": "^2.1.0",
     "nodemon": "^2.0.7",
     "ts-jest": "^27.0.3",
     "ts-node": "^10.0.0",
@@ -33,7 +35,8 @@
   },
   "dependencies": {
     "@overnightjs/core": "^1.7.6",
-    "@overnightjs/logger": "^1.2.1",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "jet-logger": "^1.0.6",
+    "lodash": "^4.17.21"
   }
 }
