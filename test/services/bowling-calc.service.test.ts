@@ -9,7 +9,7 @@ import { ThrowTally } from '../../src/entities';
 describe('Basic game with only 1 throw', () => {
     test('Test for a correct score after only 1 throw', () => {
         const scoreCalculator = new BowlingScoreCalculator();
-        const throwValue: number = Utilities.getRandomInt(0, 10);
+        const throwValue: number = Utilities.getRandomInt(0, 9);
         const throwTally = new ThrowTally();
 
         throwTally.setThrow(0, throwValue);
@@ -24,7 +24,9 @@ describe('Basic game with no spares or strikes', () => {
     const scoreCalculator: BowlingScoreCalculator = new BowlingScoreCalculator();
 
     test('Test for a correct frame score with 2 throws', () => {
-        const throwValues: number[] = new Array<number>(2).map( x => Utilities.getRandomInt(1, 4) );
+        // Create a frame of 2 throws of random values between 1 and 4
+        const throwValues: number[] = new Array<number>(2)
+                                      .map( x => Utilities.getRandomInt(1, 4) );
         const throwTally = new ThrowTally();
         const frameIndex = 0;
         let expectedFrameScore: number = 0;

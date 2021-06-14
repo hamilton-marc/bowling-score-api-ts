@@ -9,19 +9,24 @@
  * the values for each frame.
  */
 export class ThrowTally {
-    public static EMPTY_THROW: number = -1;
-    public static MAX_FRAMES: number = 10;
+    public static readonly MAX_FRAMES: number = 10;
+    public static readonly MAX_PINS: number = 10;
 
     // 10 frames * 2 throws + the potential for 1 extra in frame 10
-    public static MAX_THROWS: number = 10 * 2 + 1;
+    public static readonly MAX_THROWS: number = 10 * 2 + 1;
 
-    private throws: number[] = new Array(ThrowTally.MAX_THROWS).fill(ThrowTally.EMPTY_THROW);
-
-    constructor() {}
+    constructor(
+        private throws: number[] = new Array(ThrowTally.MAX_THROWS).fill(0)
+    ) {}
 
     public getFrame(index: number): Array<number> {
         const start: number = index * 2;
         let end: number = start + 2;
+
+        if (index + 1 === ThrowTally.MAX_FRAMES) {
+            end = start + 3;
+        }
+
         let frameSet: number[] = this.throws.slice(start, end);
 
         return frameSet;
