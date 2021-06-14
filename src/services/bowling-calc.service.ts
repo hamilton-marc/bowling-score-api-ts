@@ -15,9 +15,14 @@ import { FrameScore, ScoreCard, ThrowTally } from '../entities';
 
     private handleStrikeScenario(throwTally: ThrowTally, frameIndex: number, throwSum: number): number {
         let frameScoreValue: number = throwSum;
-    
-        frameScoreValue += throwTally.getFrame(frameIndex + 1)[0]
-                         + throwTally.getFrame(frameIndex + 1)[1];
+        const nextThrow = throwTally.getFrame(frameIndex + 1)[0];
+        let secondThrow = throwTally.getFrame(frameIndex + 1)[1];
+
+        if (nextThrow === ThrowTally.MAX_PINS) {
+            secondThrow = throwTally.getFrame(frameIndex + 2)[0];
+        }
+
+        frameScoreValue += (nextThrow + secondThrow);
 
         return frameScoreValue;
     }

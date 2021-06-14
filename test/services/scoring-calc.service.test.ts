@@ -115,12 +115,12 @@ describe('Test for the spare case', () => {
 describe('Test for the strike case', () => {
     const scoreCalculator: BowlingScoreCalculator = new BowlingScoreCalculator();
 
-    test('Test for correct frame scores with 1 spare and 2 more throws', () => {
-        const throwValues: number[] = [ 10, 0, 1, 1 ];
+    test('Test for correct frame scores with 1 strike and 2 more throws', () => {
+        const throwValues: number[] = [ 10, 0, 1, 2 ];
 
         const throwTally = new ThrowTally();
-        const expectedFrameScore = 10 + 1 + 1;
-        const expectedFinalScore = expectedFrameScore + (1 + 1);
+        const expectedFrameScore = 10 + 1 + 2;
+        const expectedFinalScore = expectedFrameScore + (1 + 2);
 
         for (let i: number = 0; i < throwValues.length; i++) {
             throwTally.setThrow(i, throwValues[i]);
@@ -128,7 +128,24 @@ describe('Test for the strike case', () => {
 
         const scoreCard: ScoreCard = scoreCalculator.computeScoreCard(throwTally);
 
-        expect(scoreCard.getFrameScore(0).score).toEqual(expectedFrameScore); // expect it to be 12
-        expect(scoreCard.finalScore).toEqual(expectedFinalScore);       // expect it to be 14
+        expect(scoreCard.getFrameScore(0).score).toEqual(expectedFrameScore); // expect it to be 13
+        expect(scoreCard.finalScore).toEqual(expectedFinalScore);       // expect it to be 16
+    });
+
+    test('Test for correct frame scores with 2 strikes and 2 more throws', () => {
+        const throwValues: number[] = [ 10, 0, 10, 0, 1, 2 ];
+
+        const throwTally = new ThrowTally();
+        const expectedFrameScore = 10 + 10 + 1;
+        const expectedFinalScore = expectedFrameScore + (10 + 1 + 2) + (1 + 2);
+
+        for (let i: number = 0; i < throwValues.length; i++) {
+            throwTally.setThrow(i, throwValues[i]);
+        }
+
+        const scoreCard: ScoreCard = scoreCalculator.computeScoreCard(throwTally);
+
+        expect(scoreCard.getFrameScore(0).score).toEqual(expectedFrameScore); // expect it to be 21
+        expect(scoreCard.finalScore).toEqual(expectedFinalScore);       // expect it to be 37
     });
 });
