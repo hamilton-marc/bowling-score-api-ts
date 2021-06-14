@@ -17,7 +17,6 @@ describe('Basic game with only 1 throw', () => {
         const scoreCard: ScoreCard = scoreCalculator.computeScoreCard(throwTally);
 
         expect(scoreCard.finalScore).toEqual(throwValue);     // expect it to be 6
-        expect(scoreCard.progressScore).toEqual(throwValue);  // expect it to be 6
     });
 });
 
@@ -37,7 +36,6 @@ describe('Basic game with no spares or strikes', () => {
 
         expect(scoreCard.getFrameScore(0).score).toEqual(expectedScore); // expect it to be 6
         expect(scoreCard.finalScore).toEqual(expectedScore);       // expect it to be 6
-        expect(scoreCard.progressScore).toEqual(expectedScore);    // expect it to be 6
     });
 
     test('Test for a correct frame score with all throws the same', () => {
@@ -55,7 +53,6 @@ describe('Basic game with no spares or strikes', () => {
 
         expect(scoreCard.getFrameScore(0).score).toEqual(expectedSingleFrameScore); // expect it to be 4
         expect(scoreCard.finalScore).toEqual(expectedScore);       // expect it to be 40
-        expect(scoreCard.progressScore).toEqual(expectedScore);    // expect it to be 40
     });
 });
 
@@ -78,7 +75,6 @@ describe('Test for the spare case', () => {
 
         expect(scoreCard.getFrameScore(0).score).toEqual(expectedFrameScore); // expect it to be 11
         expect(scoreCard.finalScore).toEqual(expectedFinalScore);       // expect it to be 12
-        expect(scoreCard.progressScore).toEqual(expectedFinalScore);    // expect it to be 12
     });
 
     test('Test for correct frame scores with 2 spares and 2 more throws', () => {
@@ -98,7 +94,6 @@ describe('Test for the spare case', () => {
         expect(scoreCard.getFrameScore(2).score).toEqual(expectedFinalScore);        // expect it to be 29
 
         expect(scoreCard.finalScore).toEqual(expectedFinalScore);       // expect it to be 29
-        expect(scoreCard.progressScore).toEqual(expectedFinalScore);    // expect it to be 29
     });
 
     test('Test for correct frame scores with all 5s', () => {
@@ -114,6 +109,5 @@ describe('Test for the spare case', () => {
         const scoreCard: ScoreCard = scoreCalculator.computeScoreCard(throwTally);
 
         expect(scoreCard.finalScore).toEqual(expectedFinalScore);       // expect it to be 29
-        expect(scoreCard.progressScore).toEqual(expectedFinalScore);    // expect it to be 29
     });
 });

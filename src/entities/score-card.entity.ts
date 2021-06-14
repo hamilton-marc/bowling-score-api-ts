@@ -34,7 +34,6 @@ export class FrameScore {
 export class ScoreCard {
     private readonly DEFAULT_MAX_FRAMES: number = 10;
     private finalScoreValue: number = 0;
-    private progressScoreValue: number = 0;
     private frameScores: FrameScore[] = [];
 
     constructor() {}
@@ -49,14 +48,6 @@ export class ScoreCard {
 
     public set finalScore(value: number) {
         this.finalScoreValue = value;
-    }
-
-    public get progressScore(): number {
-        return this.progressScoreValue;
-    }
-
-    public set progressScore(value: number) {
-        this.progressScoreValue = value;
     }
 
     public addFrameScore(frameScore: FrameScore): void {

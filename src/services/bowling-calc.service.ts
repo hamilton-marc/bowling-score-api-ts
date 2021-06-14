@@ -8,48 +8,33 @@ import { FrameScore, ScoreCard, ThrowTally } from '../entities';
  */
 
  export class BowlingScoreCalculator {
-    constructor() {
+    constructor (
+    ) {
     }
 
-    public computeFrameScore(throwTally: ThrowTally, frameIndex: number): number {
-        let frameScore: number = 0;
-        const frameThrows: Array<number> = throwTally.getFrame(frameIndex);
+    private computeFrameScoreValue(throwTally: ThrowTally, frameIndex: number): number {
+        const frameThrows: number[] = throwTally.getFrame(frameIndex);
+    
+        let frameScoreValue: number = frameThrows.reduce(
+            (accumulater: number, currentValue: number) => {
+                return (accumulater + currentValue);
+             });
 
-        frameScore = frameThrows[0] + frameThrows[1];
-
-        return frameScore;
-    }
-
-    public computeFinalScore(throwTally: ThrowTally): number {
-        let finalScore: number = 0;
-
-        for (let i: number = 0; i < ThrowTally.MAX_THROWS; i++) {
-            const throwValue: number = throwTally.getThrow(i);
-
-            if (throwValue >= 0) {
-                finalScore += throwValue; 
-            }
+        // Handle spare case
+        if (frameScoreValue === ThrowTally.MAX_PINS && frameIndex < ThrowTally.MAX_FRAMES - 1) {
+            frameScoreValue += throwTally.getFrame(frameIndex + 1)[0];
         }
 
-        return finalScore;
+        return (frameScoreValue);
     }
 
-    public computeScoreCard(throwTally: ThrowTally): ScoreCard {
+    public computeScoreCard(throwTally: ThrowTally): ScoreCard {    
         const scoreCard = new ScoreCard();
         let scoreTotal = 0;
 
         for (let i: number = 0; i < ThrowTally.MAX_FRAMES; i++) {
             const frameThrows: number[] = throwTally.getFrame(i);
-            // Sum up the throws for the frame
-            let frameScoreValue: number = frameThrows.reduce(
-                (accumulater: number, currentValue: number) => {
-                    return (accumulater + currentValue);
-                 });
-
-            // Handle spare case
-            if (frameScoreValue === ThrowTally.MAX_PINS && i < ThrowTally.MAX_FRAMES - 1) {
-                frameScoreValue += throwTally.getFrame(i+1)[0];
-            }
+            let frameScoreValue: number = this.computeFrameScoreValue(throwTally, i);
 
             scoreTotal += frameScoreValue;
 
@@ -57,7 +42,6 @@ import { FrameScore, ScoreCard, ThrowTally } from '../entities';
 
             scoreCard.addFrameScore(frameScore);
             scoreCard.finalScore = scoreTotal;
-            scoreCard.progressScore = scoreTotal;
         }
 
         return scoreCard;
