@@ -12,6 +12,32 @@ import { FrameScore, ScoreCard, ThrowTally } from '../entities';
     ) {
     }
 
+
+    private handleStrikeScenario(throwTally: ThrowTally, frameIndex: number, throwSum: number): number {
+        let frameScoreValue: number = throwSum;
+    
+        frameScoreValue += throwTally.getFrame(frameIndex + 1)[0]
+                         + throwTally.getFrame(frameIndex + 1)[1];
+
+        return frameScoreValue;
+    }
+
+    private handleSpareScenario(throwTally: ThrowTally, frameIndex: number, throwSum: number): number {
+        let frameScoreValue: number = throwSum;
+    
+        frameScoreValue += throwTally.getFrame(frameIndex + 1)[0];
+
+        return frameScoreValue;
+    }
+
+    /**
+     * Computes the individual sum for a given frame. Note that this does not accummulate
+     * from the prior frames.
+     * 
+     * @param throwTally
+     * @param frameIndex 
+     * @returns 
+     */
     private computeFrameScoreValue(throwTally: ThrowTally, frameIndex: number): number {
         const frameThrows: number[] = throwTally.getFrame(frameIndex);
     
@@ -22,12 +48,24 @@ import { FrameScore, ScoreCard, ThrowTally } from '../entities';
 
         // Handle spare case
         if (frameScoreValue === ThrowTally.MAX_PINS && frameIndex < ThrowTally.MAX_FRAMES - 1) {
-            frameScoreValue += throwTally.getFrame(frameIndex + 1)[0];
+            if (frameThrows[0] === ThrowTally.MAX_PINS) {
+                frameScoreValue = this.handleStrikeScenario(throwTally, frameIndex, frameScoreValue);                
+            }
+            else {
+                frameScoreValue = this.handleSpareScenario(throwTally, frameIndex, frameScoreValue);
+            }
         }
 
         return (frameScoreValue);
     }
 
+    /**
+     * Creates and computes the values for a ScoreCard object which represents the
+     * accumulated scores for each frame as well as the final score.
+     *
+     * @param throwTally
+     * @returns 
+     */
     public computeScoreCard(throwTally: ThrowTally): ScoreCard {    
         const scoreCard = new ScoreCard();
         let scoreTotal = 0;

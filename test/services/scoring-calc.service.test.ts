@@ -111,3 +111,24 @@ describe('Test for the spare case', () => {
         expect(scoreCard.finalScore).toEqual(expectedFinalScore);       // expect it to be 29
     });
 });
+
+describe('Test for the strike case', () => {
+    const scoreCalculator: BowlingScoreCalculator = new BowlingScoreCalculator();
+
+    test('Test for correct frame scores with 1 spare and 2 more throws', () => {
+        const throwValues: number[] = [ 10, 0, 1, 1 ];
+
+        const throwTally = new ThrowTally();
+        const expectedFrameScore = 10 + 1 + 1;
+        const expectedFinalScore = expectedFrameScore + (1 + 1);
+
+        for (let i: number = 0; i < throwValues.length; i++) {
+            throwTally.setThrow(i, throwValues[i]);
+        }
+
+        const scoreCard: ScoreCard = scoreCalculator.computeScoreCard(throwTally);
+
+        expect(scoreCard.getFrameScore(0).score).toEqual(expectedFrameScore); // expect it to be 12
+        expect(scoreCard.finalScore).toEqual(expectedFinalScore);       // expect it to be 14
+    });
+});
