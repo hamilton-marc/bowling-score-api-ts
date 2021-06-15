@@ -1,4 +1,4 @@
-import { ScoreCard, FrameScore } from "../../src/entities";
+import { ScoreCard, FrameScore } from "../../src/models";
 import { Utilities } from "../utils";
 import * as _ from "lodash";
 

@@ -1,4 +1,4 @@
-import { ThrowTally } from "../entities";
+import { ThrowTally } from "../models";
 import { BowlingScoreCalculator } from "./bowling-calc.service";
 
 export class ScoreCardService {

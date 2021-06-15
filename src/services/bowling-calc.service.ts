@@ -1,4 +1,4 @@
-import { FrameScore, ScoreCard, ThrowTally } from '../entities';
+import { FrameScore, ScoreCard, ThrowTally } from '../models';
 
 /**
  * The purpose of this class is to manage the business logic for calculating a bowling score.
@@ -18,7 +18,8 @@ import { FrameScore, ScoreCard, ThrowTally } from '../entities';
         const nextThrow = throwTally.getFrame(frameIndex + 1)[0];
         let secondThrow = throwTally.getFrame(frameIndex + 1)[1];
 
-        if (nextThrow === ThrowTally.MAX_PINS) {
+        // Only apply this logic if we're on frames 1 through 8 (assuming a 10 frame game)
+        if (nextThrow === ThrowTally.MAX_PINS && frameIndex < ThrowTally.MAX_FRAMES -2) {
             secondThrow = throwTally.getFrame(frameIndex + 2)[0];
         }
 

@@ -1,6 +1,6 @@
 import { Utilities } from '../utils';
 import { BowlingScoreCalculator } from '../../src/services';
-import { ThrowTally, ScoreCard, FrameScore } from '../../src/entities';
+import { ThrowTally, ScoreCard, FrameScore } from '../../src/models';
 /**
  * Performs unit tests on the BowlingScoreCalculator service
  * 

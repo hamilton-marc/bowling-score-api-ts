@@ -1,5 +1,5 @@
 import { Utilities } from '../utils';
-import { ThrowTally } from '../../src/entities';
+import { ThrowTally } from '../../src/models';
 import * as _ from "lodash";
 
 describe('Basic score card throw tracking', () => {
