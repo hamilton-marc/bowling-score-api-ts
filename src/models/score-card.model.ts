@@ -11,7 +11,6 @@ export class FrameScore {
         private throwValues: number[] = new Array(FrameScore.DEFAULT_THROW_COUNT),
         private scoreValue: number = 0
         ) {
-
     }
 
     set throws(throwValues: number[]) {

@@ -6,53 +6,55 @@ import { ThrowTally, ScoreCard, FrameScore } from '../../src/models';
  * 
  */
 
-describe('Basic game with only 1 throw', () => {
-    test('Test for a correct score after only 1 throw', () => {
-        const scoreCalculator = new BowlingScoreCalculator();
-        const throwValue: number = 6;
+class BowlingScoreCalculatorTest {
+    private static instance: BowlingScoreCalculatorTest;
+
+    private constructor (
+        private scoreCalculator = new BowlingScoreCalculator()
+    ) {
+
+    }
+
+    public static getInstance(): BowlingScoreCalculatorTest {
+        if (!this.instance) {
+            this.instance = new BowlingScoreCalculatorTest();
+        }
+
+        return this.instance;
+    }
+
+    public testFrameScores(throwValues: number[], expectedFrameScores: number[]) {
+
+    }
+
+    public testFinalScore(throwValues: number[], expectedFinalScore: number) {
         const throwTally = new ThrowTally();
 
-        throwTally.setThrow(0, throwValue);
+        for (let i: number = 0; i < throwValues.length; i++) {
+            throwTally.setThrow(i, throwValues[i]);
+        }
 
-        const scoreCard: ScoreCard = scoreCalculator.computeScoreCard(throwTally);
+        const scoreCard: ScoreCard = this.scoreCalculator.computeScoreCard(throwTally);
 
-        expect(scoreCard.finalScore).toEqual(throwValue);     // expect it to be 6
+        expect(scoreCard.finalScore).toEqual(expectedFinalScore);
+    }
+}
+
+
+describe('Basic game with only 1 throw', () => {
+    test('Test for a correct score after only 1 throw', () => {
+        BowlingScoreCalculatorTest.getInstance().testFinalScore([ 6 ], 6);
     });
 });
 
 describe('Basic game with no spares or strikes', () => {
-    const scoreCalculator: BowlingScoreCalculator = new BowlingScoreCalculator();
 
     test('Test for a correct frame score with 2 throws', () => {
-        const throwValues: number[] = [ 6, 3 ];
-        const throwTally = new ThrowTally();
-        const expectedScore = 6 + 3;
-
-        for (let i: number = 0; i < throwValues.length; i++) {
-            throwTally.setThrow(i, throwValues[i]);
-        }
-
-        const scoreCard: ScoreCard = scoreCalculator.computeScoreCard(throwTally);
-
-        expect(scoreCard.getFrameScore(0).score).toEqual(expectedScore); // expect it to be 6
-        expect(scoreCard.finalScore).toEqual(expectedScore);       // expect it to be 6
+        BowlingScoreCalculatorTest.getInstance().testFinalScore([ 6, 3 ], (6 + 3));
     });
 
     test('Test for a correct frame score with all throws the same', () => {
-        // simple case... assume 2 throws per frame
-        const throwValues: number[] = new Array<number>(10 * 2).fill(2);
-        const throwTally = new ThrowTally();
-        const expectedSingleFrameScore = 2 * 2;
-        const expectedScore = 10 * expectedSingleFrameScore;
-
-        for (let i: number = 0; i < throwValues.length; i++) {
-            throwTally.setThrow(i, throwValues[i]);
-        }
-
-        const scoreCard: ScoreCard = scoreCalculator.computeScoreCard(throwTally);
-
-        expect(scoreCard.getFrameScore(0).score).toEqual(expectedSingleFrameScore); // expect it to be 4
-        expect(scoreCard.finalScore).toEqual(expectedScore);       // expect it to be 40
+        BowlingScoreCalculatorTest.getInstance().testFinalScore(new Array<number>(10 * 2).fill(2), 2 * 2 * 10);
     });
 });
 
@@ -61,54 +63,21 @@ describe('Test for the spare case', () => {
     const scoreCalculator: BowlingScoreCalculator = new BowlingScoreCalculator();
 
     test('Test for correct frame scores with 1 spare and 1 more throw', () => {
-        const throwValues: number[] = [ 5, 5, 1 ];
-
-        const throwTally = new ThrowTally();
-        const expectedFrameScore = 5 + 5 + 1;
-        const expectedFinalScore = expectedFrameScore + 1;
-
-        for (let i: number = 0; i < throwValues.length; i++) {
-            throwTally.setThrow(i, throwValues[i]);
-        }
-
-        const scoreCard: ScoreCard = scoreCalculator.computeScoreCard(throwTally);
-
-        expect(scoreCard.getFrameScore(0).score).toEqual(expectedFrameScore); // expect it to be 11
-        expect(scoreCard.finalScore).toEqual(expectedFinalScore);       // expect it to be 12
+        BowlingScoreCalculatorTest.getInstance().testFinalScore([ 5, 5, 1 ], (5 + 5 + 1) + 1);
     });
 
     test('Test for correct frame scores with 2 spares and 2 more throws', () => {
         const throwValues: number[] = [ 5, 5, 5, 5, 1, 2 ];
-
-        const throwTally = new ThrowTally();
         const expectedFinalScore = (5 + 5 + 5) + (5 + 5 + 1) + (1 + 2);
 
-        for (let i: number = 0; i < throwValues.length; i++) {
-            throwTally.setThrow(i, throwValues[i]);
-        }
-
-        const scoreCard: ScoreCard = scoreCalculator.computeScoreCard(throwTally);
-
-        expect(scoreCard.getFrameScore(0).score).toEqual(5 + 5 + 5); // expect it to be 15
-        expect(scoreCard.getFrameScore(1).score).toEqual((5 + 5 + 5) + (5 + 5 + 1)); // expect it to be 26
-        expect(scoreCard.getFrameScore(2).score).toEqual(expectedFinalScore);        // expect it to be 29
-
-        expect(scoreCard.finalScore).toEqual(expectedFinalScore);       // expect it to be 29
+        BowlingScoreCalculatorTest.getInstance().testFinalScore(throwValues, expectedFinalScore);
     });
 
     test('Test for correct frame scores with all 5s', () => {
         const throwValues: number[] = new Array(ThrowTally.MAX_THROWS).fill(5);
-
-        const throwTally = new ThrowTally();
         const expectedFinalScore = (5 + 5 + 5) * 9 + (5 + 5 + 5);
 
-        for (let i: number = 0; i < throwValues.length; i++) {
-            throwTally.setThrow(i, throwValues[i]);
-        }
-
-        const scoreCard: ScoreCard = scoreCalculator.computeScoreCard(throwTally);
-
-        expect(scoreCard.finalScore).toEqual(expectedFinalScore);       // expect it to be 29
+        BowlingScoreCalculatorTest.getInstance().testFinalScore(throwValues, expectedFinalScore);
     });
 });
 
@@ -116,36 +85,13 @@ describe('Test for the strike case', () => {
     const scoreCalculator: BowlingScoreCalculator = new BowlingScoreCalculator();
 
     test('Test for correct frame scores with 1 strike and 2 more throws', () => {
-        const throwValues: number[] = [ 10, 0, 1, 2 ];
-
-        const throwTally = new ThrowTally();
-        const expectedFrameScore = 10 + 1 + 2;
-        const expectedFinalScore = expectedFrameScore + (1 + 2);
-
-        for (let i: number = 0; i < throwValues.length; i++) {
-            throwTally.setThrow(i, throwValues[i]);
-        }
-
-        const scoreCard: ScoreCard = scoreCalculator.computeScoreCard(throwTally);
-
-        expect(scoreCard.getFrameScore(0).score).toEqual(expectedFrameScore); // expect it to be 13
-        expect(scoreCard.finalScore).toEqual(expectedFinalScore);       // expect it to be 16
+        BowlingScoreCalculatorTest.getInstance().testFinalScore([ 10, 0, 1, 2 ], (10 + 1 + 2) + (1 + 2));
     });
 
     test('Test for correct frame scores with 2 strikes and 2 more throws', () => {
         const throwValues: number[] = [ 10, 0, 10, 0, 1, 2 ];
+        const expectedFinalScore = (10 + 10 + 1) + (10 + 1 + 2) + (1 + 2);
 
-        const throwTally = new ThrowTally();
-        const expectedFrameScore = 10 + 10 + 1;
-        const expectedFinalScore = expectedFrameScore + (10 + 1 + 2) + (1 + 2);
-
-        for (let i: number = 0; i < throwValues.length; i++) {
-            throwTally.setThrow(i, throwValues[i]);
-        }
-
-        const scoreCard: ScoreCard = scoreCalculator.computeScoreCard(throwTally);
-
-        expect(scoreCard.getFrameScore(0).score).toEqual(expectedFrameScore); // expect it to be 21
-        expect(scoreCard.finalScore).toEqual(expectedFinalScore);       // expect it to be 37
+        BowlingScoreCalculatorTest.getInstance().testFinalScore(throwValues, expectedFinalScore);
     });
 });

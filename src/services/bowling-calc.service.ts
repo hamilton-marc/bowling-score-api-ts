@@ -12,7 +12,15 @@ import { FrameScore, ScoreCard, ThrowTally } from '../models';
     ) {
     }
 
-
+    /**
+     * If the player knocks down all ten pins on the first throw, that's called a strike.
+     * The frame score for a strike adds in the next 2 throws.
+     * 
+     * @param throwTally
+     * @param frameIndex 
+     * @param throwSum 
+     * @returns 
+     */
     private handleStrikeScenario(throwTally: ThrowTally, frameIndex: number, throwSum: number): number {
         let frameScoreValue: number = throwSum;
         const nextThrow = throwTally.getFrame(frameIndex + 1)[0];
@@ -28,6 +36,15 @@ import { FrameScore, ScoreCard, ThrowTally } from '../models';
         return frameScoreValue;
     }
 
+    /**
+     * An alternative to the srike is the spare, in which the player knocks down all
+     * 10 pins using both throws of 1 frame.
+     *  
+     * @param throwTally 
+     * @param frameIndex 
+     * @param throwSum 
+     * @returns 
+     */
     private handleSpareScenario(throwTally: ThrowTally, frameIndex: number, throwSum: number): number {
         let frameScoreValue: number = throwSum;
     
@@ -47,12 +64,13 @@ import { FrameScore, ScoreCard, ThrowTally } from '../models';
     private computeFrameScoreValue(throwTally: ThrowTally, frameIndex: number): number {
         const frameThrows: number[] = throwTally.getFrame(frameIndex);
     
+        // get the sum of all throws in the frame
         let frameScoreValue: number = frameThrows.reduce(
             (accumulater: number, currentValue: number) => {
                 return (accumulater + currentValue);
              });
 
-        // Handle spare case
+        // Handle special cases where all 10 pins are knocked down in a frame
         if (frameScoreValue === ThrowTally.MAX_PINS && frameIndex < ThrowTally.MAX_FRAMES - 1) {
             if (frameThrows[0] === ThrowTally.MAX_PINS) {
                 frameScoreValue = this.handleStrikeScenario(throwTally, frameIndex, frameScoreValue);                
