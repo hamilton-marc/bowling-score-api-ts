@@ -31,7 +31,7 @@ export class ThrowTally {
 
         return frameSet;
     }
-
+/*
     public getThrowFromFrame(frameIndex: number, throwIndexInFrame: number): number {
         const value = this.getFrame(frameIndex)[throwIndexInFrame];
 
@@ -41,7 +41,7 @@ export class ThrowTally {
     public setThrowInFrame(frameIndex: number, throwIndexInFrame: number, pinCount: number) {
         this.throws[frameIndex * 2 + throwIndexInFrame] = pinCount;
     }
-
+*/
     public getThrow(throwIndex: number): number {
         return (this.throws[throwIndex]);
     }
