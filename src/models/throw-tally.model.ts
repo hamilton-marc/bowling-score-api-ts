@@ -7,6 +7,7 @@
  * 
  * The implementation is backed by a simple array with methods to get
  * the values for each frame.
+ * 
  */
 export class ThrowTally {
     public static readonly MAX_FRAMES: number = 10;
@@ -19,6 +20,12 @@ export class ThrowTally {
         private throws: number[] = new Array(ThrowTally.MAX_THROWS).fill(0)
     ) {}
 
+    /**
+     * Retrieves the array of pins knocked down for a given frame.
+     * 
+     * @param index 
+     * @returns 
+     */
     public getFrame(index: number): Array<number> {
         const start: number = index * 2;
         let end: number = start + 2;
@@ -27,6 +34,8 @@ export class ThrowTally {
             end = start + 3;
         }
 
+        // Slice out the portion of underlying array that contains the pins knocked
+        // down for the frame
         let frameSet: number[] = this.throws.slice(start, end);
 
         return frameSet;
