@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "types": "dist/index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --collectCoverage",
     "test:bdd": "cucumber-js -p default",
     "start": "ts-node src/index.ts",
     "build": "tsc"

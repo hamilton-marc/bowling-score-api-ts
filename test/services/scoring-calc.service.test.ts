@@ -95,3 +95,28 @@ describe('Test for the strike case', () => {
         BowlingScoreCalculatorTest.getInstance().testFinalScore(throwValues, expectedFinalScore);
     });
 });
+
+describe('Test for a mix of strikes and spares', () => {
+    const scoreCalculator: BowlingScoreCalculator = new BowlingScoreCalculator();
+
+    test('Test for correct score with alternating strikes and spares', () => {
+        const throwValues: number[] = [ 10, 0, 5, 5, 10, 0, 5, 5, 10, 0, 5, 5, 10, 0, 5, 5, 10, 0, 0, 0 ];
+        const expectedFinalScore = 170;
+
+        BowlingScoreCalculatorTest.getInstance().testFinalScore(throwValues, expectedFinalScore);
+    });
+
+    test('Test for correct score with repeated spares', () => {
+        const throwValues: number[] = [ 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9 ];
+        const expectedFinalScore = 190;
+
+        BowlingScoreCalculatorTest.getInstance().testFinalScore(throwValues, expectedFinalScore);
+    });
+
+    test('Test for correct score with perfect game', () => {
+        const throwValues: number[] = [ 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 10, 10 ];
+        const expectedFinalScore = 300;
+
+        BowlingScoreCalculatorTest.getInstance().testFinalScore(throwValues, expectedFinalScore);
+    });
+});

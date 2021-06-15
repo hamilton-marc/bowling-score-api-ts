@@ -2,7 +2,7 @@ import { Utilities } from '../utils';
 import { ThrowTally } from '../../src/models';
 import * as _ from "lodash";
 
-describe('Basic score card throw tracking', () => {
+describe('Basic throw tracking', () => {
     test('Test the ability to get and set frame throws', () => {
         const throwTally: ThrowTally = new ThrowTally();
         const throwValue: number = Utilities.getRandomInt(1, 4);
@@ -14,7 +14,7 @@ describe('Basic score card throw tracking', () => {
     });
 });
 
-describe('Basic score card frame management', () => {
+describe('Basic throw tracking frame management', () => {
     test('Test that I can get the throws for a specific frame', () => {
         const throwTally: ThrowTally = new ThrowTally();
         const frameIndex = 1;
