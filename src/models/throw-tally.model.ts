@@ -16,9 +16,23 @@ export class ThrowTally {
     // 10 frames * 2 throws + the potential for 1 extra in frame 10
     public static readonly MAX_THROWS: number = 10 * 2 + 1;
 
-    constructor(
-        private throws: number[] = new Array(ThrowTally.MAX_THROWS).fill(0)
-    ) {}
+    private throws: number[] = new Array(ThrowTally.MAX_THROWS).fill(0);
+
+    constructor(throwValues?: number[]) {
+        if (throwValues) {
+            this.setThrows(throwValues);
+        }
+    }
+
+    private setThrows(throwValues: number[]) {
+        // Clone the incoming array up to the maximum number of
+        // possible throws so we don't try to write beyond the
+        // length of our internal throws array.
+
+        for (let i: number = 0; i < throwValues.length && i < ThrowTally.MAX_THROWS; i++) {
+            this.throws[i] = throwValues[i];
+        }
+    }
 
     /**
      * Retrieves the array of pins knocked down for a given frame.

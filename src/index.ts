@@ -1,5 +1,5 @@
-const WORLD = 'world';
+import { ApiServer } from './server';
 
-export function hello(world: string = WORLD): string {
-  return `Hello ${world}! `;
-}
+const apiServer = new ApiServer();
+
+apiServer.start();

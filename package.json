@@ -8,6 +8,7 @@
     "test": "jest --collectCoverage",
     "test:bdd": "cucumber-js -p default",
     "start": "ts-node src/index.ts",
+    "watch-node" : "nodemon",
     "build": "tsc"
   },
   "repository": {
@@ -36,6 +37,7 @@
   "dependencies": {
     "@overnightjs/core": "^1.7.6",
     "express": "^4.17.1",
+    "http-status-codes": "^2.1.4",
     "jet-logger": "^1.0.6",
     "lodash": "^4.17.21"
   }
