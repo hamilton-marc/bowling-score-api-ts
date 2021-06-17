@@ -72,4 +72,9 @@ export class ScoreCard {
     public getFrameScore(index: number): FrameScore {
         return this.frameScores[index];
     }
+
+    /** returns a copy of the array of Framescores */
+    public getFrameScores(): FrameScore[] {
+        return [...this.frameScores];
+    }
 }

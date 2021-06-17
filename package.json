@@ -8,7 +8,7 @@
     "test": "jest --collectCoverage",
     "test:bdd": "cucumber-js -p default",
     "start": "ts-node src/index.ts",
-    "watch-node" : "nodemon",
+    "watch-node": "nodemon",
     "build": "tsc"
   },
   "repository": {
@@ -32,6 +32,7 @@
     "nodemon": "^2.0.7",
     "ts-jest": "^27.0.3",
     "ts-node": "^10.0.0",
+    "typed-rest-client": "^1.8.4",
     "typescript": "^4.3.2"
   },
   "dependencies": {
