@@ -20,3 +20,8 @@ Feature: Bowling Score
     And I bowl all 5s
     When I quit the game
     Then my score should be 150
+
+  Scenario: Invalid input to API
+    Given I am playing a single player game
+    When I enter invalid input
+    Then I expect an error

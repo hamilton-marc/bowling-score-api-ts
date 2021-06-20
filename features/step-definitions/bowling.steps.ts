@@ -1,6 +1,7 @@
 import assert from 'assert';
 import { binding, given, then, when } from 'cucumber-tsflow';
 import { rest } from 'lodash';
+import { HttpCodes } from 'typed-rest-client/HttpClient';
 import * as typedRestClient from 'typed-rest-client/RestClient';
 import { ThrowTally } from '../../src/models';
 import { ScoreCardDTO } from '../../src/shared';
@@ -8,6 +9,7 @@ import { ScoreCardDTO } from '../../src/shared';
 @binding()
 export class BowlingSteps {
     private scoreCard: ScoreCardDTO | null = null;
+    private errorCondition: boolean = false;
 
     constructor (
         private restClient = new typedRestClient.RestClient('bowling-bdd', 'http://localhost:3000')
@@ -25,6 +27,12 @@ export class BowlingSteps {
         };
 
         let response = await this.restClient.get('api/score', options);
+
+        if (response.statusCode != HttpCodes.OK) {
+            console.log('Status code = ' + response.statusCode);
+            throw new Error((response.result as object).toString());
+        }
+
         const scoreCardResult: ScoreCardDTO = response.result as ScoreCardDTO;
 
         console.log(response.result);
@@ -35,6 +43,7 @@ export class BowlingSteps {
     @given('I am playing a single player game')
     public createNewGame() {
         this.scoreCard = null;
+        this.errorCondition = false;
     }
 
     @given('I throw a ball and knock down {int} pins')
@@ -46,7 +55,6 @@ export class BowlingSteps {
 
     @given('I bowl a perfect game')
     public async bowlPerfectGame(){
-//      const throws: string = '10,0,10,0,10,0,10,0,10,0,10,0,10,0,10,0,10,0,10,10,10';
         const throws: string = new Array<string>(ThrowTally.MAX_FRAMES - 1).fill('10,0').join(',')
                              + ','
                              + new Array<string>(3).fill('10').join(',');
@@ -65,6 +73,20 @@ export class BowlingSteps {
         assert(this.scoreCard);
     }
 
+    @when('I enter invalid input')
+    public async invalidThrows(){
+        const throws: string =  new Array<string>(ThrowTally.MAX_THROWS).fill('X').join(',');
+        this.errorCondition = false;
+
+        try {
+            this.scoreCard = await this.getScoreCard(throws);
+        }
+        catch(err) {
+            this.errorCondition = true;
+            console.log(err);
+        }
+    }
+
     @when('I quit the game')
     public endTheGame() {
     }
@@ -73,5 +95,10 @@ export class BowlingSteps {
     public finalScoreShouldBeEqual(expectedFinalScore: number) {
         assert(this.scoreCard && this.scoreCard.finalScore);
         assert(this.scoreCard.finalScore === expectedFinalScore);
+    }
+
+    @then('I expect an error')
+    public expectErrorCondition() {
+        assert(this.errorCondition);
     }
 }

@@ -1,4 +1,5 @@
 import { FrameScore, ScoreCard, ThrowTally } from '../models';
+import { BowlingScoreError } from '../shared/BowlingScoreError.error';
 
 /**
  * The purpose of this class is to manage the business logic for calculating a bowling score.
@@ -53,6 +54,39 @@ import { FrameScore, ScoreCard, ThrowTally } from '../models';
         return frameScoreValue;
     }
 
+    private validateAndComputeFrame(frameThrows: number[], frameIndex: number): number {
+
+        if (frameIndex === ThrowTally.MAX_FRAMES - 1) {
+            if (frameThrows[0] < ThrowTally.MAX_PINS && frameThrows[1] > ThrowTally.MAX_PINS - frameThrows[0]) {
+                throw new BowlingScoreError("Too many pins thrown for frameIndex = " + frameIndex);
+            }
+
+            if (frameThrows[1] < ThrowTally.MAX_PINS && frameThrows[2] > ThrowTally.MAX_PINS - frameThrows[1]) {
+                throw new BowlingScoreError("Too many pins thrown for frameIndex = " + frameIndex);
+            }
+
+            if (frameThrows[0] + frameThrows[1] < ThrowTally.MAX_PINS && frameThrows[2] > 0) {
+                throw new BowlingScoreError("Too many pins thrown for frameIndex = " + frameIndex);
+            }
+        }
+
+        let frameScoreValue: number = frameThrows.reduce((accumulater: number, currentValue: number) => {
+            const frameSum = accumulater + currentValue;
+
+            if (frameIndex < ThrowTally.MAX_FRAMES - 1 && frameSum > ThrowTally.MAX_PINS * 2) {
+                throw new BowlingScoreError("Too many pins thrown for frameIndex = " + frameIndex);
+            }
+
+            if (frameIndex === ThrowTally.MAX_FRAMES - 1 && frameSum > ThrowTally.MAX_PINS * 3) {
+                throw new BowlingScoreError("Too many pins thrown for frameIndex = " + frameIndex);
+            }
+
+            return frameSum;
+        });
+
+        return frameScoreValue;
+    }
+
     /**
      * Computes the individual sum for a given frame. Note that this does not accummulate
      * from the prior frames.
@@ -65,10 +99,7 @@ import { FrameScore, ScoreCard, ThrowTally } from '../models';
         const frameThrows: number[] = throwTally.getFrame(frameIndex);
     
         // get the sum of all throws in the frame
-        let frameScoreValue: number = frameThrows.reduce(
-            (accumulater: number, currentValue: number) => {
-                return (accumulater + currentValue);
-             });
+        let frameScoreValue: number = this.validateAndComputeFrame(frameThrows, frameIndex);
 
         // Handle special cases where all 10 pins are knocked down in a frame
         if (frameScoreValue === ThrowTally.MAX_PINS && frameIndex < ThrowTally.MAX_FRAMES - 1) {
