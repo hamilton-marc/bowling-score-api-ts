@@ -5,7 +5,7 @@ import Logger from 'jet-logger';
 import { BowlingScoreCalculator } from '../services';
 import { FrameScore, ScoreCard, ThrowTally } from '../models';
 import { FrameScoreDTO, ScoreCardDTO } from '../shared/score-card.dto';
-import { BowlingScoreError } from '../shared/BowlingScoreError.error';
+import { BowlingScoreError, InvalidPinCombinationError } from '../shared/BowlingScoreError.error';
 
 @Controller('api/score')
 export class BowlingScoreController {
@@ -102,7 +102,8 @@ export class BowlingScoreController {
 
         let statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
 
-        if (err instanceof BowlingScoreError) {
+        if (err instanceof BowlingScoreError ||
+            err instanceof InvalidPinCombinationError) {
             statusCode = StatusCodes.BAD_REQUEST;
         }
 

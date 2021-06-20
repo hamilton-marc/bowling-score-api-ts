@@ -73,7 +73,7 @@ import { BowlingScoreError, InvalidPinCombinationError } from '../shared/Bowling
         let frameScoreValue: number = frameThrows.reduce((accumulater: number, currentValue: number) => {
             const frameSum = accumulater + currentValue;
 
-            if (frameIndex < ThrowTally.MAX_FRAMES - 1 && frameSum > ThrowTally.MAX_PINS * 2) {
+            if (frameIndex < ThrowTally.MAX_FRAMES - 1 && frameSum > ThrowTally.MAX_PINS) {
                 throw new InvalidPinCombinationError(frameIndex);
             }
 

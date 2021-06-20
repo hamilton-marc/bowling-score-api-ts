@@ -54,4 +54,8 @@ describe('Simple sad path case', () => {
     test('Test a simple case of 1 throw containing invalid input', async () => {
         BowlingScoreControllerTest.getInstance().testGetScoreCard('X', HttpCodes.BadRequest);
     });
+
+    test('Test a case of 1 throw containing too many pins', async () => {
+        BowlingScoreControllerTest.getInstance().testGetScoreCard('10,10', HttpCodes.BadRequest);
+    });
 });
