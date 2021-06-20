@@ -14,7 +14,7 @@ export class BowlingScoreController {
     ) {}
 
     @Get()
-    private async getScoreCard(req: Request, res: Response): Promise<Response> {
+    public async getScoreCard(req: Request, res: Response): Promise<Response> {
         try {
             Logger.Info('BowlingScoreController::getScoreCard()');
             Logger.Info('Query: ' + JSON.stringify(req.query));

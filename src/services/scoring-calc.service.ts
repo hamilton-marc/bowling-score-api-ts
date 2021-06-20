@@ -1,5 +1,5 @@
 import { FrameScore, ScoreCard, ThrowTally } from '../models';
-import { BowlingScoreError } from '../shared/BowlingScoreError.error';
+import { BowlingScoreError, InvalidPinCombinationError } from '../shared/BowlingScoreError.error';
 
 /**
  * The purpose of this class is to manage the business logic for calculating a bowling score.
@@ -58,15 +58,15 @@ import { BowlingScoreError } from '../shared/BowlingScoreError.error';
 
         if (frameIndex === ThrowTally.MAX_FRAMES - 1) {
             if (frameThrows[0] < ThrowTally.MAX_PINS && frameThrows[1] > ThrowTally.MAX_PINS - frameThrows[0]) {
-                throw new BowlingScoreError("Too many pins thrown for frameIndex = " + frameIndex);
+                throw new InvalidPinCombinationError(frameIndex);
             }
 
             if (frameThrows[1] < ThrowTally.MAX_PINS && frameThrows[2] > ThrowTally.MAX_PINS - frameThrows[1]) {
-                throw new BowlingScoreError("Too many pins thrown for frameIndex = " + frameIndex);
+                throw new InvalidPinCombinationError(frameIndex);
             }
 
             if (frameThrows[0] + frameThrows[1] < ThrowTally.MAX_PINS && frameThrows[2] > 0) {
-                throw new BowlingScoreError("Too many pins thrown for frameIndex = " + frameIndex);
+                throw new InvalidPinCombinationError(frameIndex);
             }
         }
 
@@ -74,11 +74,11 @@ import { BowlingScoreError } from '../shared/BowlingScoreError.error';
             const frameSum = accumulater + currentValue;
 
             if (frameIndex < ThrowTally.MAX_FRAMES - 1 && frameSum > ThrowTally.MAX_PINS * 2) {
-                throw new BowlingScoreError("Too many pins thrown for frameIndex = " + frameIndex);
+                throw new InvalidPinCombinationError(frameIndex);
             }
 
             if (frameIndex === ThrowTally.MAX_FRAMES - 1 && frameSum > ThrowTally.MAX_PINS * 3) {
-                throw new BowlingScoreError("Too many pins thrown for frameIndex = " + frameIndex);
+                throw new InvalidPinCombinationError(frameIndex);
             }
 
             return frameSum;
