@@ -1,20 +1,32 @@
 import assert from 'assert';
-import { binding, given, then, when } from 'cucumber-tsflow';
-import { rest } from 'lodash';
+import { binding, given, then, when, before, after } from 'cucumber-tsflow';
 import { HttpCodes } from 'typed-rest-client/HttpClient';
 import * as typedRestClient from 'typed-rest-client/RestClient';
 import { ThrowTally } from '../../src/models';
 import { ScoreCardDTO } from '../../src/shared';
+import { ApiServer } from '../../src/server';
 
 @binding()
 export class BowlingSteps {
     private scoreCard: ScoreCardDTO | null = null;
     private errorCondition: boolean = false;
+    private apiServer = new ApiServer();
+    private static readonly PORT: number = 3001;
 
     constructor (
-        private restClient = new typedRestClient.RestClient('bowling-bdd', 'http://localhost:3000')
+        private restClient = new typedRestClient.RestClient('bowling-bdd', `http://localhost:${BowlingSteps.PORT}`)
         ) {
 
+    }
+
+    @before()
+    public beforeAllScenarios() {
+        this.apiServer.start(BowlingSteps.PORT);
+    }
+
+    @after()
+    public afterAllScenarios() {
+        this.apiServer.stop();
     }
 
     private async getScoreCard(throws: string): Promise<ScoreCardDTO> {

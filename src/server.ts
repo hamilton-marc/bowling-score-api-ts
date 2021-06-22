@@ -1,10 +1,12 @@
 import express from 'express';
-import { Server } from '@overnightjs/core';
+import { Server } from 'net';
+import { Server as OvernightServer } from '@overnightjs/core';
 import Logger from 'jet-logger';
-import { BowlingScoreCalculator } from './services';
 import { ApiHealthController, BowlingScoreController } from './controllers';
 
-export class ApiServer extends Server {
+export class ApiServer extends OvernightServer {
+    private expressServer!: Server;
+
     constructor() {
         super(true);  // setting showLogs to true
 
@@ -31,8 +33,14 @@ export class ApiServer extends Server {
     }
 */
     public start(port: number = 3000): void {
-        this.app.listen(port, () => {
+        this.expressServer = this.app.listen(port, () => {
             Logger.Imp('Server listening on port: ' + port);
-        })
+        });
+    }
+
+    public stop(): void {
+        this.expressServer.close(() => {
+            Logger.Imp('Closing Server');
+        });
     }
 }
