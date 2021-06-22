@@ -56,15 +56,20 @@ import { BowlingScoreError, InvalidPinCombinationError } from '../shared/Bowling
 
     private validateAndComputeFrame(frameThrows: number[], frameIndex: number): number {
 
+        // Special cases for the final frame
         if (frameIndex === ThrowTally.MAX_FRAMES - 1) {
+
+            // If we don't get a strike on the first throw, the second throw can, at best be a spare
             if (frameThrows[0] < ThrowTally.MAX_PINS && frameThrows[1] > ThrowTally.MAX_PINS - frameThrows[0]) {
                 throw new InvalidPinCombinationError(frameIndex);
             }
 
+            // If we don't get a strike on the second throw, the third throw can, at best be a spare
             if (frameThrows[1] < ThrowTally.MAX_PINS && frameThrows[2] > ThrowTally.MAX_PINS - frameThrows[1]) {
                 throw new InvalidPinCombinationError(frameIndex);
             }
 
+            // If we don't get a spare or better on the first 2 throws, we don't get a third throw
             if (frameThrows[0] + frameThrows[1] < ThrowTally.MAX_PINS && frameThrows[2] > 0) {
                 throw new InvalidPinCombinationError(frameIndex);
             }
@@ -73,10 +78,12 @@ import { BowlingScoreError, InvalidPinCombinationError } from '../shared/Bowling
         let frameScoreValue: number = frameThrows.reduce((accumulater: number, currentValue: number) => {
             const frameSum = accumulater + currentValue;
 
+            // You can't knock down more pins than actually exist
             if (frameIndex < ThrowTally.MAX_FRAMES - 1 && frameSum > ThrowTally.MAX_PINS) {
                 throw new InvalidPinCombinationError(frameIndex);
             }
 
+            // There's a special case in the final frame where you get at most 3 throws
             if (frameIndex === ThrowTally.MAX_FRAMES - 1 && frameSum > ThrowTally.MAX_PINS * 3) {
                 throw new InvalidPinCombinationError(frameIndex);
             }
