@@ -12,11 +12,8 @@ class BowlingScoreControllerTest {
     ) {
     }
 
-    /**
-     * Unfortunately we have to repeat code due to Typescript compilation issues
-     * :facepalm
-     */
     private resetJestMocks(): void {
+        this.mockRequest = { };
         this.mockResponse = {
             status: jest.fn().mockImplementation((a: any) => this.mockResponse),
             json: jest.fn().mockImplementation((a: any) => this.mockResponse)
@@ -51,11 +48,29 @@ describe('Simple happy path case', () => {
 });
 
 describe('Simple sad path case', () => {
+    test('Test where no input was actually provided', async () => {
+        BowlingScoreControllerTest.getInstance().testGetScoreCard('', HttpCodes.BadRequest);
+    });
+
     test('Test a simple case of 1 throw containing invalid input', async () => {
         BowlingScoreControllerTest.getInstance().testGetScoreCard('X', HttpCodes.BadRequest);
     });
 
     test('Test a case of 1 throw containing too many pins', async () => {
         BowlingScoreControllerTest.getInstance().testGetScoreCard('10,10', HttpCodes.BadRequest);
+    });
+
+    test('Test where too many throws were entered', async () => {
+        const frameThrows: string = new Array(100).fill('1').join(',');
+
+        BowlingScoreControllerTest.getInstance().testGetScoreCard(frameThrows, HttpCodes.BadRequest);
+    });
+
+    test('Test a case where a throw contains too many pins', async () => {
+        BowlingScoreControllerTest.getInstance().testGetScoreCard('26,58', HttpCodes.BadRequest);
+    });
+
+    test('Test a case where a throw contains a negative number of pins', async () => {
+        BowlingScoreControllerTest.getInstance().testGetScoreCard('-2,-5', HttpCodes.BadRequest);
     });
 });

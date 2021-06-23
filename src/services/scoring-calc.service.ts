@@ -1,5 +1,5 @@
 import { FrameScore, ScoreCard, ThrowTally } from '../models';
-import { BowlingScoreError, InvalidPinCombinationError } from '../shared/BowlingScoreError.error';
+import { InvalidPinCombinationError } from '../shared';
 
 /**
  * The purpose of this class is to manage the business logic for calculating a bowling score.
@@ -54,6 +54,15 @@ import { BowlingScoreError, InvalidPinCombinationError } from '../shared/Bowling
         return frameScoreValue;
     }
 
+    /**
+     * Encapsulates the logic around making sure the input provided conforms to the rules of
+     * bowling.  We need to make sure we aren't sent an invalid number of pins as well
+     * as handling the special case around the final frame.
+     * 
+     * @param frameThrows
+     * @param frameIndex 
+     * @returns 
+     */
     private validateAndComputeFrame(frameThrows: number[], frameIndex: number): number {
 
         // Special cases for the final frame
@@ -64,13 +73,18 @@ import { BowlingScoreError, InvalidPinCombinationError } from '../shared/Bowling
                 throw new InvalidPinCombinationError(frameIndex);
             }
 
-            // If we don't get a strike on the second throw, the third throw can, at best be a spare
-            if (frameThrows[1] < ThrowTally.MAX_PINS && frameThrows[2] > ThrowTally.MAX_PINS - frameThrows[1]) {
+            // If we don't get a spare or better on the first 2 throws, we don't get a third throw
+            if (frameThrows[0] + frameThrows[1] < ThrowTally.MAX_PINS && frameThrows[2] > 0) {
                 throw new InvalidPinCombinationError(frameIndex);
             }
 
-            // If we don't get a spare or better on the first 2 throws, we don't get a third throw
-            if (frameThrows[0] + frameThrows[1] < ThrowTally.MAX_PINS && frameThrows[2] > 0) {
+            // If we get...
+            // 1. a strike on the first throw and
+            // 2. less than a strike on the second throw
+            // then the 3rd throw can't be more than a spare
+            if (frameThrows[0] === ThrowTally.MAX_PINS &&
+                frameThrows[1] < ThrowTally.MAX_PINS &&
+                frameThrows[2] > ThrowTally.MAX_PINS - frameThrows[1]) {
                 throw new InvalidPinCombinationError(frameIndex);
             }
         }

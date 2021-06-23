@@ -5,11 +5,12 @@
   "main": "dist/index.js",
   "types": "dist/index.js",
   "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "tsc",
     "test": "jest --collectCoverage",
     "test:bdd": "cucumber-js -p default",
     "start": "ts-node src/index.ts",
-    "watch-node": "nodemon",
-    "build": "tsc"
+    "watch-node": "nodemon"
   },
   "repository": {
     "type": "git",

@@ -1,6 +1,7 @@
 import { Utilities } from '../utils';
 import { BowlingScoreCalculator } from '../../src/services';
 import { ThrowTally, ScoreCard, FrameScore } from '../../src/models';
+import { InvalidPinCombinationError } from '../../src/shared';
 /**
  * Performs unit tests on the BowlingScoreCalculator service
  * 
@@ -37,6 +38,24 @@ class BowlingScoreCalculatorTest {
         const scoreCard: ScoreCard = this.scoreCalculator.computeScoreCard(throwTally);
 
         expect(scoreCard.finalScore).toEqual(expectedFinalScore);
+    }
+
+    public testForError(throwValues: number[]) {
+        const throwTally = new ThrowTally();
+        let exception!: Error;
+
+        for (let i: number = 0; i < throwValues.length; i++) {
+            throwTally.setThrow(i, throwValues[i]);
+        }
+
+        try {
+            const scoreCard: ScoreCard = this.scoreCalculator.computeScoreCard(throwTally);
+        }
+        catch (err) {
+            exception = err;
+        }
+
+        expect(exception instanceof InvalidPinCombinationError).toBeTruthy();
     }
 }
 
@@ -118,5 +137,33 @@ describe('Test for a mix of strikes and spares', () => {
         const expectedFinalScore = 300;
 
         BowlingScoreCalculatorTest.getInstance().testFinalScore(throwValues, expectedFinalScore);
+    });
+});
+
+describe('Test for special case scenarios on the final frame', () => {
+    const scoreCalculator: BowlingScoreCalculator = new BowlingScoreCalculator();
+
+    test('Test for an invalid number of pins on the second throw of the final frame', () => {
+        const throwValues: number[] = [ 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0,    5, 10 ];
+
+        BowlingScoreCalculatorTest.getInstance().testForError(throwValues);
+    });
+
+    test('Test for an invalid 3rd throw in the final frame if there is no prior spare or strike', () => {
+        const throwValues: number[] = [ 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0,    5, 3, 3 ];
+
+        BowlingScoreCalculatorTest.getInstance().testForError(throwValues);
+    });
+
+    test('Test for an invalid number of pins on the final throw of the final frame', () => {
+        const throwValues: number[] = [ 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0,    10, 3, 10 ];
+
+        BowlingScoreCalculatorTest.getInstance().testForError(throwValues);
+    });
+
+    test('Test for an invalid number of total pins in the final frame', () => {
+        const throwValues: number[] = [ 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0,    16, 23, 5 ];
+
+        BowlingScoreCalculatorTest.getInstance().testForError(throwValues);
     });
 });

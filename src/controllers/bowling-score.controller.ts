@@ -20,10 +20,7 @@ export class BowlingScoreController {
             Logger.Info('Query: ' + JSON.stringify(req.query));
 
             const throwTally: ThrowTally = this.mapInputToThrowTally(req);
-/*
-            const throws: string[] = req.query.throws ? req.query.throws.toString().split(',') : ['0'];
-            const throwValues: number[] = throws.map((pins: string) => Number.parseInt(pins));
-*/
+
             const scoreCard: ScoreCard = this.bowlingCalcSvc.computeScoreCard(throwTally);
             const scoreCardDto: ScoreCardDTO = this.mapScoreCardToDTO(scoreCard);
 
@@ -42,7 +39,7 @@ export class BowlingScoreController {
                                         'knocked down for each throw.');
         }
 
-        const throws: string[] = req.query.throws ? req.query.throws.toString().split(',') : ['0'];
+        const throws: string[] = req.query.throws.toString().split(',');
         let throwValues: number[];
 
         if (throws.length > ThrowTally.MAX_THROWS) {
@@ -98,13 +95,13 @@ export class BowlingScoreController {
     }
 
     private handleError(err: Error, res: Response): Response {
-        Logger.Err(err, true);
-
         let statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
 
-        if (err instanceof BowlingScoreError ||
-            err instanceof InvalidPinCombinationError) {
+        if (err instanceof BowlingScoreError) {
             statusCode = StatusCodes.BAD_REQUEST;
+        }
+        else {
+            Logger.Err(err, true);
         }
 
         return res.status(statusCode).json({
