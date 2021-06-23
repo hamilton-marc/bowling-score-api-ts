@@ -24,10 +24,6 @@ class BowlingScoreCalculatorTest {
         return this.instance;
     }
 
-    public testFrameScores(throwValues: number[], expectedFrameScores: number[]) {
-
-    }
-
     public testFinalScore(throwValues: number[], expectedFinalScore: number) {
         const throwTally = new ThrowTally();
 
