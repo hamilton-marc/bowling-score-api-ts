@@ -1,4 +1,5 @@
-import { getApiHealth } from './docs';
+import { apiHealth } from './docs';
+import { bowlingScore } from './docs';
 
 export const swaggerDocument = {
     openapi: '3.0.1',
@@ -23,8 +24,7 @@ export const swaggerDocument = {
         }
     ],
     paths: {
-        "/api": {
-            "get": getApiHealth
-        }
+        "/api": apiHealth,
+        "/api/score": bowlingScore
     }
 };
