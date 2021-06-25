@@ -2,6 +2,9 @@ import express from 'express';
 import { Server } from 'net';
 import { Server as OvernightServer } from '@overnightjs/core';
 import Logger from 'jet-logger';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from './swagger';
+
 import { ApiHealthController, BowlingScoreController } from './controllers';
 
 export class ApiServer extends OvernightServer {
@@ -17,6 +20,7 @@ export class ApiServer extends OvernightServer {
     private setupExpress(): void {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
+        this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     }
 
     private setupControllers(): void {
