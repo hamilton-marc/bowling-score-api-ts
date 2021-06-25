@@ -1,4 +1,6 @@
-const swaggerDocument = {
+import { getApiHealth } from './docs';
+
+export const swaggerDocument = {
     openapi: '3.0.1',
     info: {
         version: '0.0.1',
@@ -14,7 +16,15 @@ const swaggerDocument = {
             name: 'Apache 2.0',
             url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
         }
+    },
+    tags: [
+        {
+            name: 'Bowling Scores API'
+        }
+    ],
+    paths: {
+        "/api": {
+            "get": getApiHealth
+        }
     }
 };
-
-export default swaggerDocument;

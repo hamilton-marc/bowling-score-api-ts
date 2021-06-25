@@ -3,7 +3,7 @@ import { Server } from 'net';
 import { Server as OvernightServer } from '@overnightjs/core';
 import Logger from 'jet-logger';
 import swaggerUi from 'swagger-ui-express';
-import swaggerDocument from './swagger';
+import { swaggerDocument } from './swagger';
 
 import { ApiHealthController, BowlingScoreController } from './controllers';
 
