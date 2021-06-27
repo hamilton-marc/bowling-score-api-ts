@@ -26,6 +26,7 @@
     "@types/jest": "^26.0.23",
     "@types/lodash": "^4.14.170",
     "@types/node": "^15.12.2",
+    "@types/swagger-ui-express": "^4.1.2",
     "cucumber-tsflow": "^4.0.0-rc.1",
     "jest": "^27.0.4",
     "jest-express": "^1.12.0",
@@ -38,7 +39,7 @@
   },
   "dependencies": {
     "@overnightjs/core": "^1.7.6",
-    "@types/swagger-ui-express": "^4.1.2",
+    "cli-table3": "^0.6.0",
     "express": "^4.17.1",
     "http-status-codes": "^2.1.4",
     "jet-logger": "^1.0.6",
