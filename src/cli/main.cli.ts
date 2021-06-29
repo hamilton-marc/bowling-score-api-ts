@@ -2,6 +2,7 @@ import { ScoreCardDisplay } from './score-card.cli';
 import { GamePlay } from './game-play.cli';
 import prompts, { PromptObject, Answers } from 'prompts';
 import { waitForDebugger } from 'inspector';
+import { ScoreCard } from '../models';
 
 class Program {
     public constructor() {
@@ -23,45 +24,29 @@ class Program {
         return response.newGame === true;
     }
 
-    private async playGame(): Promise<number> {
-        const questions: PromptObject<string>[] = [{
-            type: 'number',
-            name: 'throw',
-            message: 'Frame 1, Throw 1: How many pins were knocked down?',
-            min: 0,
-            max: 10
-        }];
-
-        const response = await prompts(questions);
-
-        return response.throw;
-    }
-
-    private displayScoreCard() {
-        const scoreCardDisplay: ScoreCardDisplay = new ScoreCardDisplay();
+    private displayScoreCard(scoreCard: ScoreCard) {
+        const scoreCardDisplay: ScoreCardDisplay = new ScoreCardDisplay(scoreCard);
 
         console.log(scoreCardDisplay.renderScoreCard());
     }
 
     public async run() {
-
         try {
             let result: Answers<string>;
             let playNewGame: boolean = false;
-            let pins: Array<string> = [];
+            let scoreCard: ScoreCard;
 
             playNewGame = await this.mainMenu();
-//          console.log(`playNewGame = ${playNewGame}`);
 
             if (playNewGame) {
                 const gamePlay: GamePlay = new GamePlay();
-                pins = await gamePlay.newGame();
-                console.log(`pins = ${pins}`);
+                scoreCard = await gamePlay.newGame();
 
-                this.displayScoreCard();
+                this.displayScoreCard(scoreCard);
             }
         }
         catch(err) {
+            console.error(err);
         }
     }
 }

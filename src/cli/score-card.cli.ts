@@ -1,8 +1,7 @@
 import CliTable3, { Table } from 'cli-table3';
 import colors from 'colors/safe';
 import { head } from 'lodash';
-import { ThrowTally } from '../models';
-import { ScoreCardDTO } from '../shared';
+import { ThrowTally, ScoreCard, FrameScore } from '../models';
 
 export class ScoreCardDisplay {
     private readonly DEFAULT_TABLE_CHARS = {
@@ -12,11 +11,13 @@ export class ScoreCardDisplay {
     , 'right': '║' , 'right-mid': '╢' , 'middle': '│' };
 
     public constructor(
-        private scoreCard: ScoreCardDTO = { } as ScoreCardDTO
-    ) {
+        private scoreCard: ScoreCard = new ScoreCard()
+        ) {
     }
 
-    public renderScoreCard(maxThrows: number = ThrowTally.MAX_THROWS): string {
+    public renderScoreCard(scoreCardInput?: ScoreCard, maxThrows: number = ThrowTally.MAX_THROWS): string {
+        if (scoreCardInput) this.scoreCard = scoreCardInput;
+
         return this.createTable(maxThrows);
     }
 
@@ -39,10 +40,6 @@ export class ScoreCardDisplay {
         return row;
     }
 
-    private renderThrow() {
-
-    }
-
     private createThrowsRow(maxThrows: number): Array<any> {
         const row = [];
 
@@ -50,15 +47,16 @@ export class ScoreCardDisplay {
 
         for (let i: number = 0; i < ThrowTally.MAX_THROWS; i++) {
             let content: string = ' ';
-/*
-            if (i < maxThrows) {
-                // A little messy... we need to figure out which throw index to use
-                // in the collection of frames
-                const frameThrowIndex = i % ( i < ThrowTally.MAX_THROWS - 1 ? 2 : 3);
 
-                this.scoreCard.frameScores[maxThrows / 2].throwValues[frameThrowIndex];
-            }
-*/
+            // a little messy... we need to figure out which frame each throw
+            // corresponds to and also take into account the final frame
+            const divisor = i < ThrowTally.MAX_THROWS - 1 ? 2 : 3;
+            const frameIndex = Math.floor(i / divisor);
+            const frameThrowIndex = i % divisor;
+
+            const frameScore: FrameScore = this.scoreCard.getFrameScore(frameIndex);
+            content = frameScore.throws[frameThrowIndex]?.toString();
+
             row.push({
                 hAlign: 'center'
               , content: content
@@ -75,12 +73,10 @@ export class ScoreCardDisplay {
 
         for (let i: number = 0; i < ThrowTally.MAX_FRAMES; i++) {
             const colSpan: number = i < ThrowTally.MAX_FRAMES - 1 ? 2 : 3;
-            const content: string = ' ';
-/*
-            if (i < maxFrames) {
-                this.scoreCard.frameScores[i].score.toString();
-            }
-*/
+            let content: string = ' ';
+
+            content = this.scoreCard.getFrameScore(i).score.toString();
+
             row.push({
                 hAlign: 'center'
               , colSpan: colSpan
