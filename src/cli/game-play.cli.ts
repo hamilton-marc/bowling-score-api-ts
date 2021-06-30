@@ -18,18 +18,18 @@ export class GamePlay {
         this.reset();
 
         for (let i=0; i < ThrowTally.MAX_THROWS - 1; i++) {
-            const frameNumber: number = Math.floor(i / 2) + 1;
-            const frameThrowNumber: number = i % 2 + 1;
+            const frameIndex: number = Math.floor(i / 2);
+            const frameThrowIndex: number = i % 2;
             let maxPins = ThrowTally.MAX_PINS;
 
-            if (frameThrowNumber === 2) {
+            if (frameThrowIndex === 1) {
                 maxPins = ThrowTally.MAX_PINS - this.throwTally.getThrow(i-1);
             }
 
             const questions: PromptObject<string>[] = [{
                 type: 'number',
                 name: 'throw',
-                message: `Frame ${frameNumber}, Throw ${frameThrowNumber}: How many pins were knocked down?`,
+                message: `Frame ${frameIndex+1}, Throw ${frameThrowIndex+1}: How many pins were knocked down?`,
                 min: 0,
                 max: maxPins
             }];

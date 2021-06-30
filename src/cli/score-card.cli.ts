@@ -40,22 +40,35 @@ export class ScoreCardDisplay {
         return row;
     }
 
+    private renderThrow(throwIndex: number) {
+        // a little messy... we need to figure out which frame each throw
+        // corresponds to and also take into account the final frame
+        const divisor = throwIndex < ThrowTally.MAX_THROWS - 1 ? 2 : 3;
+        const frameIndex = Math.floor(throwIndex / divisor);
+        const frameThrowIndex = throwIndex % divisor;
+
+        const frameScore: FrameScore = this.scoreCard.getFrameScore(frameIndex);
+        let content: string = frameScore.throws[frameThrowIndex]?.toString();
+
+        if (frameScore.throws[0] + frameScore.throws[1] === ThrowTally.MAX_PINS) {
+            if (frameThrowIndex === 0 && frameScore.throws[frameThrowIndex] === ThrowTally.MAX_PINS) {
+                content = 'X';
+            }
+            else if (frameThrowIndex === 1) {
+                content = frameScore.throws[frameThrowIndex] > 0 ? '/' : ' ';
+            }
+        }
+
+        return content;
+    }
+
     private createThrowsRow(maxThrows: number): Array<any> {
         const row = [];
 
         row.push(colors.green('Throws'));
 
         for (let i: number = 0; i < ThrowTally.MAX_THROWS; i++) {
-            let content: string = ' ';
-
-            // a little messy... we need to figure out which frame each throw
-            // corresponds to and also take into account the final frame
-            const divisor = i < ThrowTally.MAX_THROWS - 1 ? 2 : 3;
-            const frameIndex = Math.floor(i / divisor);
-            const frameThrowIndex = i % divisor;
-
-            const frameScore: FrameScore = this.scoreCard.getFrameScore(frameIndex);
-            content = frameScore.throws[frameThrowIndex]?.toString();
+            let content: string = this.renderThrow(i);
 
             row.push({
                 hAlign: 'center'
