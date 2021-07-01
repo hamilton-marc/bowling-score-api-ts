@@ -43,9 +43,9 @@ export class ScoreCardDisplay {
     private renderThrow(throwIndex: number) {
         // a little messy... we need to figure out which frame each throw
         // corresponds to and also take into account the final frame
-        const divisor = throwIndex < ThrowTally.MAX_THROWS - 1 ? 2 : 3;
-        const frameIndex = Math.floor(throwIndex / divisor);
-        const frameThrowIndex = throwIndex % divisor;
+
+        const frameIndex = Math.floor(throwIndex / 2) - (throwIndex === ThrowTally.MAX_THROWS - 1 ? 1 : 0);
+        const frameThrowIndex = throwIndex % (frameIndex < ThrowTally.MAX_FRAMES - 1 ? 2 : 3);
 
         const frameScore: FrameScore = this.scoreCard.getFrameScore(frameIndex);
         let content: string = frameScore.throws[frameThrowIndex]?.toString();
@@ -57,6 +57,10 @@ export class ScoreCardDisplay {
             else if (frameThrowIndex === 1) {
                 content = frameScore.throws[frameThrowIndex] > 0 ? '/' : ' ';
             }
+        }
+
+        if (frameIndex === ThrowTally.MAX_FRAMES - 1 && frameScore.throws[frameThrowIndex] === ThrowTally.MAX_PINS) {
+            content = 'X';
         }
 
         return content;
