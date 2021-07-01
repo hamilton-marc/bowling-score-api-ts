@@ -40,6 +40,19 @@ export class ScoreCardDisplay {
         return row;
     }
 
+    /**
+     * Super messy method which renders the throw to similate how a bowling score
+     * is reflected in a real bowling game.
+     * 
+     * Strikes are marked with an 'X'
+     * Spares are marked with an '/'
+     * Gutterballs are marked with a '-'
+     * 
+     * And then there are the special cases with the final frame... 
+     *
+     * @param throwIndex
+     * @returns 
+     */
     private renderThrow(throwIndex: number) {
         // a little messy... we need to figure out which frame each throw
         // corresponds to and also take into account the final frame
@@ -50,6 +63,8 @@ export class ScoreCardDisplay {
         const frameScore: FrameScore = this.scoreCard.getFrameScore(frameIndex);
         let content: string = frameScore.throws[frameThrowIndex]?.toString();
 
+        if (frameScore.throws[frameThrowIndex] === 0) content = '-';
+
         if (frameScore.throws[0] + frameScore.throws[1] === ThrowTally.MAX_PINS) {
             if (frameThrowIndex === 0 && frameScore.throws[frameThrowIndex] === ThrowTally.MAX_PINS) {
                 content = 'X';
@@ -59,8 +74,20 @@ export class ScoreCardDisplay {
             }
         }
 
-        if (frameIndex === ThrowTally.MAX_FRAMES - 1 && frameScore.throws[frameThrowIndex] === ThrowTally.MAX_PINS) {
-            content = 'X';
+        // Super messy dealing with the special cases of the 10th frame
+        if (frameIndex === ThrowTally.MAX_FRAMES - 1) {
+            if (frameScore.throws[frameThrowIndex] === ThrowTally.MAX_PINS) {
+                content = 'X';
+            }
+            else if (frameThrowIndex === 2 &&
+                     frameScore.throws[frameThrowIndex] > 0 &&
+                     frameScore.throws[frameThrowIndex-1] + frameScore.throws[frameThrowIndex] === ThrowTally.MAX_PINS) {
+                content = '/';
+            }
+            else if (frameThrowIndex === 2 &&
+                     frameScore.throws[frameThrowIndex-1] + frameScore.throws[frameThrowIndex] < ThrowTally.MAX_PINS) {
+                content = ' ';
+            }
         }
 
         return content;

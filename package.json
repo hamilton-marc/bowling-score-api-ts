@@ -10,6 +10,7 @@
     "test": "jest --collectCoverage",
     "test:bdd": "cucumber-js -p default",
     "start": "ts-node src/index.ts",
+    "start:cli": "ts-node src/cli/main.cli.ts",
     "watch-node": "nodemon"
   },
   "repository": {
