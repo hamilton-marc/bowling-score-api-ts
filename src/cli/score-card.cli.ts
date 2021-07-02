@@ -40,7 +40,7 @@ export class ScoreCardDisplay {
     /**
      * Creates the header row for the table indicating the Frame count.
      *
-     * @returns the Array object used to render the cli-table3 row
+     * @returns an Array object used to render the cli-table3 row
      */
     private createHeaderRow(): Array<any> {
         const row = [];
@@ -115,6 +115,14 @@ export class ScoreCardDisplay {
         return content;
     }
 
+    /**
+     * Creates the row that indicates the number of pins knocked down
+     * in each frame.  Most of the heavy lifting to indicate what is
+     * actually displayed is hanled by the "renderThrow" method.
+     *
+     * @param maxThrows - maximum number of throws to render
+     * @returns an Array object used to render the cli-table3 row
+     */
     private createThrowsRow(maxThrows: number): Array<any> {
         const row = [];
 
@@ -132,6 +140,13 @@ export class ScoreCardDisplay {
         return row;
     }
 
+    /**
+     * This method renders the row which shows the score for each
+     * individual frame.
+     *
+     * @param maxFrames - the maxiumum number of frames to render
+     * @returns an Array object used to render the cli-table3 row
+     */
     private createFrameScoreRow(maxFrames: number): Array<any> {
         const row = [];
 
@@ -153,11 +168,20 @@ export class ScoreCardDisplay {
         return row;
     }
 
+    /**
+     * This method creates the entire table to render the ScoreCard:
+     * 1. render the header row containing the frame numbers
+     * 2. render the throws row containing the pins knocked down for each frame
+     * 3. render the row containing the score for each frame
+     *
+     * @param maxThrows the maximum number of throws to render
+     * @returns the rendered table as a string that can be displayed
+     *          on the command line.
+     */
     private createTable(maxThrows: number): string {
         let renderedTable: string = '';
         let table: Table = new CliTable3({
             chars: this.DEFAULT_TABLE_CHARS
-//        , colWidths: [30, 30]
         });
 
         table.push(

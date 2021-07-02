@@ -7,12 +7,30 @@ import { FrameScore, ScoreCard, ThrowTally } from '../models';
 import { FrameScoreDTO, ScoreCardDTO } from '../shared/score-card.dto';
 import { BowlingScoreError, InvalidPinCombinationError } from '../shared/BowlingScoreError.error';
 
+
+/**
+ * The bowling score controller is the entry point to the API. There's really only 1
+ * HTTP method (GET) which is used as there is no state persistence required for this
+ * project.
+ * 
+ * The consumer of the web service will initiate a request containing a comma delimited
+ * set of "throws" (max of 21) and then an object is returned representing the score card
+ * 
+ */
 @Controller('api/score')
 export class BowlingScoreController {
     constructor(
         private readonly bowlingCalcSvc: BowlingScoreCalculator = new BowlingScoreCalculator()
     ) {}
 
+    /**
+     * This method responds to an HTTP GET, expecting a "throws" parameter containing
+     * a comma delimited set of consective bowling throws.
+     *
+     * @param req express request object
+     * @param res express response object
+     * @returns the response wrapped in a Promise
+     */
     @Get()
     public async getScoreCard(req: Request, res: Response): Promise<Response> {
         try {

@@ -4,6 +4,11 @@ import { StatusCodes } from 'http-status-codes';
 
 import Logger from 'jet-logger';
 
+/**
+ * Simple path to be able to tell whether or not the API is up and running.
+ * The format of the JSON corresponds to a proposed standard.
+ *
+ */
 @Controller('api')
 export class ApiHealthController {
     @Get()
