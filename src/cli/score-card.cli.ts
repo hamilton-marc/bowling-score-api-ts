@@ -103,6 +103,7 @@ export class ScoreCardDisplay {
             }
             else if (frameThrowIndex === 2 &&
                      frameScore.throws[frameThrowIndex] > 0 &&
+                     frameScore.throws[frameThrowIndex-2] + frameScore.throws[frameThrowIndex-1] != ThrowTally.MAX_PINS &&
                      frameScore.throws[frameThrowIndex-1] + frameScore.throws[frameThrowIndex] === ThrowTally.MAX_PINS) {
                 content = '/';
             }

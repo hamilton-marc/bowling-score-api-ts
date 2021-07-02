@@ -5,8 +5,7 @@ import Logger from 'jet-logger';
 import { BowlingScoreCalculator } from '../services';
 import { FrameScore, ScoreCard, ThrowTally } from '../models';
 import { FrameScoreDTO, ScoreCardDTO } from '../shared/score-card.dto';
-import { BowlingScoreError, InvalidPinCombinationError } from '../shared/BowlingScoreError.error';
-
+import { BowlingScoreError } from '../shared/BowlingScoreError.error';
 
 /**
  * The bowling score controller is the entry point to the API. There's really only 1
@@ -48,6 +47,13 @@ export class BowlingScoreController {
         }
     }
 
+    /**
+     * Takes the query parameter we received as input, parses it,
+     * validates it and maps it to a ThrowTally object
+     * 
+     * @param req - the incoming express request
+     * @returns a ThrowTally object containing all of the bowling throws
+     */
     private mapInputToThrowTally(req: Request): ThrowTally {
         if (!req.query || !req.query.throws ||
             !req.query.throws.length) {
@@ -89,6 +95,13 @@ export class BowlingScoreController {
         return new ThrowTally(throwValues);
     }
 
+    /**
+     * Translates our ScoreCard object to a ScoreCardDTO interface used to pass
+     * the ScoreCard info back to the consumer of this service.
+     * 
+     * @param scoreCard 
+     * @returns a ScoreCardDTO
+     */
     private mapScoreCardToDTO(scoreCard: ScoreCard): ScoreCardDTO {
         const scoreCardDto: ScoreCardDTO = {
             length: scoreCard.length,
@@ -99,6 +112,13 @@ export class BowlingScoreController {
         return scoreCardDto;
     }
 
+    /**
+     * Maps the scores that were calculated for each frame into a corresponding
+     * DTO interface so this can be passsed back to the service consumer.
+     *
+     * @param frameScores - an array of FrameScore objects to be translated
+     * @returns a corresponding array of FrameScoreDTOs
+     */
     private mapFrameScoresToDtos(frameScores: FrameScore[]): FrameScoreDTO[] {
         const frameScoreDtos: FrameScoreDTO[] = frameScores.map( frameScore => {
             const frameScoreDto: FrameScoreDTO = {
@@ -112,6 +132,13 @@ export class BowlingScoreController {
         return frameScoreDtos;
     }
 
+    /**
+     * If any sort of error happens during processing, process it appproapriately.
+     * 
+     * @param err - error
+     * @param res - express response object
+     * @returns express response object
+     */
     private handleError(err: Error, res: Response): Response {
         let statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
 

@@ -7,6 +7,10 @@ import { swaggerDocument } from './swagger';
 
 import { ApiHealthController, BowlingScoreController } from './controllers';
 
+/**
+ * This class is responsible for setting up and configuring
+ * express to be used as the server for our API
+ */
 export class ApiServer extends OvernightServer {
     private expressServer!: Server;
 
@@ -17,13 +21,21 @@ export class ApiServer extends OvernightServer {
         this.setupControllers();
     }
 
+    /**
+     * Boilerplate configuration of Express with the addition of a route
+     * for our swagger documentation.
+     */
     private setupExpress(): void {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     }
 
-    private setupControllers(): void {
+    /**
+     * Set's up the controllers used for the health check
+     * as well as calculating the bowing scores.
+     */
+     private setupControllers(): void {
         const ctlrInstances = [
             new ApiHealthController(),
             new BowlingScoreController()
@@ -31,18 +43,20 @@ export class ApiServer extends OvernightServer {
 
         super.addControllers(ctlrInstances);
     }
-/*
-    public get expressApp(): Application {
-        return this.app;
-    }
-*/
-    public start(port: number = 3000): void {
+
+    /**
+     * Starts the express server
+     */
+     public start(port: number = 3000): void {
         this.expressServer = this.app.listen(port, () => {
             Logger.Imp('Server listening on port: ' + port);
         });
     }
 
-    public stop(): void {
+    /**
+     * Stops the express server
+     */
+     public stop(): void {
         this.expressServer.close(() => {
             Logger.Imp('Closing Server');
         });

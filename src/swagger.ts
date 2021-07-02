@@ -1,6 +1,9 @@
 import { apiHealth } from './docs';
 import { bowlingScore } from './docs';
 
+/**
+ * Configuration for our swagger document
+ */
 export const swaggerDocument = {
     openapi: '3.0.1',
     info: {

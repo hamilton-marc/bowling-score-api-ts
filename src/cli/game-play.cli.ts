@@ -89,9 +89,10 @@ export class GamePlay {
      * @returns the ScoreCard of the game wrapped in a Promise
      */
     public async newGame(): Promise<ScoreCard> {
+        let userExit: boolean = false;
         this.reset();
 
-        for (let i=0; i < ThrowTally.MAX_THROWS; i++) {
+        for (let i=0; i < ThrowTally.MAX_THROWS && !userExit; i++) {
             const { frameIndex, frameThrowIndex } = GamePlay.calculateFrameAndThrowIndex(i);
             let maxPins = this.calculateMaxPins(i);
 
@@ -105,11 +106,14 @@ export class GamePlay {
                 name: 'throw',
                 message: `Frame ${frameIndex+1}, Throw ${frameThrowIndex+1}: How many pins were knocked down?`,
                 min: 0,
-                max: maxPins
+                max: maxPins,
+                initial: 0
             }];
 
-            const response = await prompts(questions);
-            this.throwTally.setThrow(i, response.throw);
+            const response = await prompts(questions, {
+                onSubmit: (prompt, answer) => this.throwTally.setThrow(i, answer),
+                onCancel: prompt => userExit = true
+            });
         }
 
         this.scoreCard = this.scoreCalculator.computeScoreCard(this.throwTally);
