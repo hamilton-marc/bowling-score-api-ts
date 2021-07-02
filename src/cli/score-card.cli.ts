@@ -1,8 +1,15 @@
 import CliTable3, { Table } from 'cli-table3';
 import colors from 'colors/safe';
-import { head } from 'lodash';
 import { ThrowTally, ScoreCard, FrameScore } from '../models';
 
+/**
+ * This purpose of this class is the take a ScoreCard and render it
+ * in a table on the command line.  Special care has been taken to
+ * render it the way that it would appear in a real bowling alley.
+ * (i.e. 'X' for strikes, '/' for spares, '-' for gutter ball, etc.)
+ * This made the command line "UI" logic a bit more complex than
+ * anticipated.
+ */
 export class ScoreCardDisplay {
     private readonly DEFAULT_TABLE_CHARS = {
       'top': '═' , 'top-mid': '╤' , 'top-left': '╔' , 'top-right': '╗'
@@ -15,18 +22,33 @@ export class ScoreCardDisplay {
         ) {
     }
 
+    /**
+     * The public method which takes a score card as input and then creates a table.
+     * An optional "maxThrows" parameter allows the table to be properly rendered
+     * if we want to render the table before the game has concluded.
+     *
+     * @param scoreCardInput - the ScoreCard to be rendered
+     * @param maxThrows - the maximum number of throws that should be rendered
+     * @returns the rendered score card as a string
+     */
     public renderScoreCard(scoreCardInput?: ScoreCard, maxThrows: number = ThrowTally.MAX_THROWS): string {
         if (scoreCardInput) this.scoreCard = scoreCardInput;
 
         return this.createTable(maxThrows);
     }
 
+    /**
+     * Creates the header row for the table indicating the Frame count.
+     *
+     * @returns the Array object used to render the cli-table3 row
+     */
     private createHeaderRow(): Array<any> {
         const row = [];
 
         row.push(colors.green('Frame'));
 
         for (let i: number = 0; i < ThrowTally.MAX_FRAMES; i++) {
+            // make sure we account for the potential for 3 throws on the final frame
             const colSpan: number = i < ThrowTally.MAX_FRAMES - 1 ? 2 : 3;
             const content: string = (i + 1).toString();
 
@@ -50,10 +72,10 @@ export class ScoreCardDisplay {
      * 
      * And then there are the special cases with the final frame... 
      *
-     * @param throwIndex
-     * @returns 
+     * @param throwIndex - the index in the total number of throws to render
+     * @returns the 1 char string indicating what will show up in the throw box
      */
-    private renderThrow(throwIndex: number) {
+    private renderThrow(throwIndex: number): string {
         // a little messy... we need to figure out which frame each throw
         // corresponds to and also take into account the final frame
 
@@ -74,7 +96,7 @@ export class ScoreCardDisplay {
             }
         }
 
-        // Super messy dealing with the special cases of the 10th frame
+        // Super messy dealing with the special cases of the final frame
         if (frameIndex === ThrowTally.MAX_FRAMES - 1) {
             if (frameScore.throws[frameThrowIndex] === ThrowTally.MAX_PINS) {
                 content = 'X';
