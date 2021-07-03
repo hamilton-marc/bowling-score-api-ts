@@ -1,45 +1,130 @@
-**Edit a file, create a new file, and clone from Bitbucket in under 2 minutes**
+# Bowling API (Typescript)
+This is an implementation of a Bowling Score card used as a code exercise.
 
-When you're done, you can delete the content in this README and update the file with details for others getting started with your repository.
+The rules of bowling represent an excellent use case for a code exercise
+as it requires you to consider the rules of the games and the quirky
+edge cases that go along with it.
 
-*We recommend that you open this README in another tab as you perform the tasks below. You can [watch our video](https://youtu.be/0ocf7u76WSo) for a full demo of all the steps in this tutorial. Open the video in a new tab to avoid leaving Bitbucket.*
+This implementation comes in 2 flavors:
+- an API
+- a CLI (command line interface)
 
----
+Both the CLI and API consume the same basic logic for computing the score of
+a bowling game. You can easily use the API from the swagger doc UI or by
+simply invoking it from the address bar of your browser. Of course, you can
+always use a Rest API client such as Postman as well.
 
-## Edit a file
+## Installing / Getting started
 
-You’ll start by editing this README file to learn how to edit a file in Bitbucket.
+### Prerequisites
 
-1. Click **Source** on the left side.
-2. Click the README.md link from the list of files.
-3. Click the **Edit** button.
-4. Delete the following text: *Delete this line to make a change to the README from Bitbucket.*
-5. After making your change, click **Commit** and then **Commit** again in the dialog. The commit page will open and you’ll see the change you just made.
-6. Go back to the **Source** page.
+Be sure you have Node Package Manager (npm) installed
 
----
+### Installation
 
-## Create a file
+From the project directory, simply run NPM's typical install command.
 
-Next, you’ll add a new file to this repository.
+```shell
+npm i
+```
 
-1. Click the **New file** button at the top of the **Source** page.
-2. Give the file a filename of **contributors.txt**.
-3. Enter your name in the empty file space.
-4. Click **Commit** and then **Commit** again in the dialog.
-5. Go back to the **Source** page.
+NPM will then pull down all of the dependencies into a `node_modules` folder
 
-Before you move on, go ahead and explore the repository. You've already seen the **Source** page, but check out the **Commits**, **Branches**, and **Settings** pages.
+## Executing the API
 
----
+To run the API locally, simply run the command below. This will spin up an
+express server on port 3000:
 
-## Clone a repository
+```shell
+npm run start
+```
 
-Use these steps to clone from SourceTree, our client for using the repository command-line free. Cloning allows you to work on your files locally. If you don't yet have SourceTree, [download and install first](https://www.sourcetreeapp.com/). If you prefer to clone from the command line, see [Clone a repository](https://confluence.atlassian.com/x/4whODQ).
+### API Health Check
 
-1. You’ll see the clone button under the **Source** heading. Click that button.
-2. Now click **Check out in SourceTree**. You may need to create a SourceTree account or log in.
-3. When you see the **Clone New** dialog in SourceTree, update the destination path and name if you’d like to and then click **Clone**.
-4. Open the directory you just created to see your repository’s files.
+To check to make sure the server is up and running, Simply open your browser
+to `http://localhost:3000/api`.  You should see simple JSON message indicating
+that the service is up and running:
 
-Now that you're more familiar with your Bitbucket repository, go ahead and add a new file locally. You can [push your change back to Bitbucket with SourceTree](https://confluence.atlassian.com/x/iqyBMg), or you can [add, commit,](https://confluence.atlassian.com/x/8QhODQ) and [push from the command line](https://confluence.atlassian.com/x/NQ0zDQ).
+```JSON
+{ "status": "pass" }
+```
+
+### API Swagger Doc
+
+To see the documentation for the API, navigate to the following URL:
+
+`http://localhost:3000/api-docs`
+
+From the Swagger interface, you can optionally interact with the API.  To
+calculate a score from a set of bowling throws, simply enter a comma delimited
+set of throws for each frame.  Note that you must enter all throw values for
+each frame, even for a strike. You don't have to enter all frames though. The
+API will calcuate however many frames you enter (up to a max of 10 frames).
+
+#### Examples
+
+The following will give you the current score after a player knocks down 6 pins
+in the first frame:
+
+`http://localhost:3000/api/score?throws=6`
+
+
+Below is an example where we calculate the score after a player throws 2
+strikes in a row in the first and second frames. Note that we must put a zero
+in the 2nd throw when a player throws a strike.
+
+`http://localhost:3000/api/score?throws=10,0,10,0`
+
+In this example, the player throws a spare in each of the first 2 frames and then
+knocks down a total of 9 (4+5) in the third frame.
+
+## Executing the Command Line Application
+
+This project includes a very rudimentary command line interface to provide a
+friendlier way to exercise the underlying scoring functionality.  You can run
+this using the following command:
+
+```shell
+npm run start:cli
+```
+
+You will be presented with a series of questions. First, you'll be asked if
+you want to start a new game. Choosing "New Game" then begins a series of
+questions asking you how many pins were knocked down for each throw of each
+frame.
+
+Once you're done entering in all of the throws, you'll be presented with a
+visual representation of the score card for that game.
+
+If you want to end the game early at any point, simply choose hit `ESC`.
+
+## Executing the Tests
+
+This application was developed with both Unit Test and Behavioral Tests.
+
+### Executing the Unit Tests
+
+The unit tests were developed using Jest and can be executed with the following
+command.
+
+```shell
+npm run test
+```
+
+### Executing the Behavioral Tests
+
+The behavioral tests execute against the API. Running the following command will spin
+up an instance of the web service, execute the tests and then shut down the server.
+
+```shell
+npm run test:bdd
+```
+
+## Links
+
+- Project homepage: https://your.github.com/awesome-project/
+- Repository: https://github.com/your/awesome-project/
+
+## Licensing
+
+"The code in this project is licensed under MIT license."
