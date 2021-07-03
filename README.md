@@ -68,7 +68,6 @@ in the first frame:
 
 `http://localhost:3000/api/score?throws=6`
 
-
 Below is an example where we calculate the score after a player throws 2
 strikes in a row in the first and second frames. Note that we must put a zero
 in the 2nd throw when a player throws a strike.
@@ -77,6 +76,8 @@ in the 2nd throw when a player throws a strike.
 
 In this example, the player throws a spare in each of the first 2 frames and then
 knocks down a total of 9 (4+5) in the third frame.
+
+`http://localhost:3000/api/score?throws=3,7,8,2,5,4`
 
 ## Executing the Command Line Application
 
@@ -119,11 +120,6 @@ up an instance of the web service, execute the tests and then shut down the serv
 ```shell
 npm run test:bdd
 ```
-
-## Links
-
-- Project homepage: https://your.github.com/awesome-project/
-- Repository: https://github.com/your/awesome-project/
 
 ## Licensing
 
