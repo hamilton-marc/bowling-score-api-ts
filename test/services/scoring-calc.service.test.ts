@@ -5,6 +5,9 @@ import { InvalidPinCombinationError } from '../../src/shared';
 /**
  * Performs unit tests on the BowlingScoreCalculator service
  * 
+ * API Tests
+ * 
+ * @group api
  */
 
 class BowlingScoreCalculatorTest {

@@ -8,9 +8,11 @@
     "prebuild": "rimraf dist",
     "build": "tsc",
     "test": "jest --collectCoverage",
+    "test:cli": "jest --collectCoverage --group=cli",
+    "test:api": "jest --collectCoverage --group=api",
     "test:bdd": "cucumber-js -p default",
     "start": "ts-node src/index.ts",
-    "start:cli": "ts-node src/cli/main.cli.ts",
+    "start:cli": "ts-node src/cli/index.ts",
     "watch-node": "nodemon"
   },
   "repository": {

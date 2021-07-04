@@ -10,7 +10,7 @@ export class FrameScore {
     public static readonly DEFAULT_THROW_COUNT: number = 2;
 
     constructor (
-        private throwValues: number[] = new Array(FrameScore.DEFAULT_THROW_COUNT),
+        private throwValues: number[] = new Array<number>(FrameScore.DEFAULT_THROW_COUNT),
         private scoreValue: number = 0
         ) {
     }

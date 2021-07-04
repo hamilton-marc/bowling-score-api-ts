@@ -123,4 +123,4 @@ npm run test:bdd
 
 ## Licensing
 
-"The code in this project is licensed under MIT license."
+The code in this project is licensed under MIT license.

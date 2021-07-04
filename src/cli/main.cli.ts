@@ -15,8 +15,10 @@ import { ScoreCard } from '../models';
  * to render it on the command line.
  * 
  */
-class Program {
-    public constructor() {
+export class Program {
+    public constructor(
+        private gamePlay: GamePlay = new GamePlay()
+    ) {
     }
 
     /**
@@ -60,19 +62,20 @@ class Program {
      * 2. Use the GamePlay class to perform the score tracking
      * 3. Use the ScoreCardDisplay class to render the resulting ScoreCard
      */
-    public async run() {
+    public async run(): Promise<ScoreCard | undefined> {
+
         try {
             let result: Answers<string>;
             let playNewGame: boolean = false;
-            let scoreCard: ScoreCard;
+            let scoreCard: ScoreCard = new ScoreCard();
 
             playNewGame = await this.mainMenu();
 
             if (playNewGame) {
-                const gamePlay: GamePlay = new GamePlay();
-                scoreCard = await gamePlay.newGame();
+                scoreCard = await this.gamePlay.newGame();
 
                 this.displayScoreCard(scoreCard);
+                return scoreCard;
             }
         }
         catch(err) {
@@ -80,5 +83,3 @@ class Program {
         }
     }
 }
-
-new Program().run();

@@ -2,6 +2,12 @@ import { Request, Response } from 'express';
 import { HttpCodes } from 'typed-rest-client/HttpClient';
 import { BowlingScoreController } from '../../src/controllers';
 
+/**
+ * API Tests
+ * 
+ * @group api
+ */
+
 class BowlingScoreControllerTest {
     private static instance: BowlingScoreControllerTest;
     private mockRequest: Partial<Request> = { };

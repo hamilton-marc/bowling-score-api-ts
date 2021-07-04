@@ -2,6 +2,12 @@ import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { ApiHealthController } from '../../src/controllers';
 
+/**
+ * API Tests
+ * 
+ * @group api
+ */
+
 class ApiHealthControllerTest {
     private static instance: ApiHealthControllerTest;
     private mockRequest: Partial<Request> = { };

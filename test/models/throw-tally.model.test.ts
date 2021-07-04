@@ -2,6 +2,12 @@ import { Utilities } from '../utils';
 import { ThrowTally } from '../../src/models';
 import * as _ from "lodash";
 
+/**
+ * API Tests
+ * 
+ * @group api
+ */
+
 describe('Basic throw tracking', () => {
     test('Test the ability to get and set frame throws', () => {
         const throwTally: ThrowTally = new ThrowTally();

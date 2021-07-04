@@ -2,6 +2,12 @@ import { ScoreCard, FrameScore } from "../../src/models";
 import { Utilities } from "../utils";
 import * as _ from "lodash";
 
+/**
+ * API Tests
+ * 
+ * @group api
+ */
+
 describe('Perform some basic operations on the FrameScore model object', () => {
     test('Test to make sure the properties reflect what is being passed in on the constructor', () => {
         const frameScore = new FrameScore([0, 1], 1);
