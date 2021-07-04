@@ -11,7 +11,6 @@ import { BowlingScoreCalculator } from '../services';
  * the newGame() method.
  */
 export class GamePlay {
-    ;
     private throwTally = new ThrowTally();
     private scoreCard = new ScoreCard();
 
