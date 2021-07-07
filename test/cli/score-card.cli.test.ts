@@ -22,7 +22,7 @@ import { FrameScore, ScoreCard, ThrowTally } from '../../src/models';
         return this.instance;
     }
 
-    public testScoreCardRender(frameThrows: Array<number[]>) {
+    public testScoreCardRender(frameThrows: Array<number[]>, searchStr: string) {
         const scoreCard = new ScoreCard();
 
         for (let i: number = 0; i < ThrowTally.MAX_FRAMES; i++) {
@@ -43,28 +43,35 @@ import { FrameScore, ScoreCard, ThrowTally } from '../../src/models';
                     scoreCardStr);
 
         expect(scoreCardStr.length).toBeGreaterThan(0);
+        expect(scoreCardStr).toContain(searchStr);
+
         return scoreCardStr;
     }
  }
 
 describe('Render a score card table from a ScoreCard object', () => {
     test('Test that we can render a simple score card table', () => {
+        const frameThrows: Array<number[]> = new Array(ThrowTally.MAX_FRAMES).fill([0,0]);
+        ScoreCardDisplayTest.getInstance().testScoreCardRender(frameThrows, "-");
+    });
+
+    test('Test that we can render a simple score card table', () => {
         const frameThrows: Array<number[]> = new Array(ThrowTally.MAX_FRAMES).fill([1,1]);
-        ScoreCardDisplayTest.getInstance().testScoreCardRender(frameThrows);
+        ScoreCardDisplayTest.getInstance().testScoreCardRender(frameThrows, "1");
     });
 
     test('Test that we can render a score card table with spares', () => {
         const frameThrows: Array<number[]> = new Array(ThrowTally.MAX_FRAMES).fill([5,5]);
         frameThrows[ThrowTally.MAX_FRAMES-1] = [5,5,5];
 
-        ScoreCardDisplayTest.getInstance().testScoreCardRender(frameThrows);
+        ScoreCardDisplayTest.getInstance().testScoreCardRender(frameThrows, "/");
     });
 
     test('Test that we can render a score card table with a perfect game', () => {
         const frameThrows: Array<number[]> = new Array(ThrowTally.MAX_FRAMES).fill([10,0]);
         frameThrows[ThrowTally.MAX_FRAMES-1] = new Array(3).fill(10);
 
-        ScoreCardDisplayTest.getInstance().testScoreCardRender(frameThrows);
+        ScoreCardDisplayTest.getInstance().testScoreCardRender(frameThrows, "X");
     });
 });
 
