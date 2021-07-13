@@ -18,7 +18,7 @@ always use a Rest API client such as Postman as well.
 
 ### Prerequisites
 
-Be sure you have Node Package Manager (npm) installed
+Be sure you have NodeJS including Node Package Manager (npm) installed
 
 ### Installation
 
