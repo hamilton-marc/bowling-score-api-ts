@@ -1,4 +1,5 @@
 import express from 'express';
+import { Application } from 'express';
 import { Server } from 'net';
 import { Server as OvernightServer } from '@overnightjs/core';
 import Logger from 'jet-logger';
@@ -42,6 +43,13 @@ export class ApiServer extends OvernightServer {
         ];
 
         super.addControllers(ctlrInstances);
+    }
+
+    /**
+     * Returns the instance of the express app
+     */
+    public get expressApp(): Application {
+        return this.app;
     }
 
     /**
