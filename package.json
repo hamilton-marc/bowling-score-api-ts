@@ -7,7 +7,7 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "tsc",
-    "build:functions": "tsc -p tsconfig.functions.json",
+    "build:netlify": "npm run prebuild && tsc -p tsconfig.netlify.json",
     "test": "jest --collectCoverage",
     "test:cli": "jest --collectCoverage --group=cli",
     "test:api": "jest --collectCoverage --group=api",
