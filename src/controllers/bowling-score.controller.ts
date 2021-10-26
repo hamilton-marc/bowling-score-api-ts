@@ -6,6 +6,7 @@ import { BowlingScoreCalculator } from '../services';
 import { FrameScore, ScoreCard, ThrowTally } from '../models';
 import { FrameScoreDTO, ScoreCardDTO } from '../shared/score-card.dto';
 import { BowlingScoreError } from '../shared/BowlingScoreError.error';
+import { Environment } from '../environment';
 
 /**
  * The bowling score controller is the entry point to the API. There's really only 1
@@ -16,7 +17,7 @@ import { BowlingScoreError } from '../shared/BowlingScoreError.error';
  * set of "throws" (max of 21) and then an object is returned representing the score card
  * 
  */
-@Controller('api/score')
+@Controller(Environment.getInstance().apiPrefix + 'api/score')
 export class BowlingScoreController {
     constructor(
         private readonly bowlingCalcSvc: BowlingScoreCalculator = new BowlingScoreCalculator()

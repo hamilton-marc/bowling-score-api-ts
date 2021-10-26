@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { Controller, Get } from '@overnightjs/core';
 import { StatusCodes } from 'http-status-codes';
-
+import { Environment } from '../environment';
 import Logger from 'jet-logger';
 
 /**
@@ -9,7 +9,7 @@ import Logger from 'jet-logger';
  * The format of the JSON corresponds to a proposed standard.
  *
  */
-@Controller('api')
+@Controller(Environment.getInstance().apiPrefix + 'api')
 export class ApiHealthController {
     @Get()
     public getMessage(req: Request, res: Response): Response {

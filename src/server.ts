@@ -7,6 +7,7 @@ import swaggerUi from 'swagger-ui-express';
 import { swaggerDocument } from './swagger';
 
 import { ApiHealthController, BowlingScoreController } from './controllers';
+import { Environment } from './environment';
 
 /**
  * This class is responsible for setting up and configuring
@@ -29,7 +30,7 @@ export class ApiServer extends OvernightServer {
     private setupExpress(): void {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
-        this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+        this.app.use('/' + Environment.getInstance().apiPrefix + 'api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     }
 
     /**
