@@ -44,7 +44,7 @@ export class ApiServer extends OvernightServer {
             apiPrefix = '\\' + apiPrefix;
         }
 
-        const swaggerRoute: string = '/' + apiPrefix + 'api-docs';
+        const swaggerRoute: string = '/' + apiPrefix + 'docs';
 
         Logger.Imp('Swagger Route: ' + swaggerRoute);
 
