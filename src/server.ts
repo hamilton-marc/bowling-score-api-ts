@@ -5,9 +5,13 @@ import { Server as OvernightServer } from '@overnightjs/core';
 import Logger from 'jet-logger';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerDocument } from './swagger';
+//import expressListRoutes from 'express-list-routes';
+const expressListRoutes = require('express-list-routes');
+import http from 'http';
 
 import { ApiHealthController, BowlingScoreController } from './controllers';
 import { Environment } from './environment';
+
 
 /**
  * This class is responsible for setting up and configuring
@@ -30,11 +34,17 @@ export class ApiServer extends OvernightServer {
     private setupExpress(): void {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
-        this.app.use(this.getSwaggerRoute(), swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+        this.app.get(this.getSwaggerRoute(), swaggerUi.serve, swaggerUi.setup(swaggerDocument));
     }
 
     private getSwaggerRoute(): string {
-        const swaggerRoute: string = '/' + Environment.getInstance().apiPrefix + 'api-docs';
+        let apiPrefix = Environment.getInstance().apiPrefix;
+
+        if (apiPrefix.startsWith('.')) {
+            apiPrefix = '\\' + apiPrefix;
+        }
+
+        const swaggerRoute: string = '/' + apiPrefix + 'api-docs';
 
         Logger.Imp('Swagger Route: ' + swaggerRoute);
 
@@ -52,6 +62,7 @@ export class ApiServer extends OvernightServer {
         ];
 
         super.addControllers(ctlrInstances);
+        expressListRoutes(this.app);
     }
 
     /**
@@ -67,6 +78,8 @@ export class ApiServer extends OvernightServer {
      public start(port: number = 3000): void {
         this.expressServer = this.app.listen(port, () => {
             Logger.Imp('Server listening on port: ' + port);
+        }).on('error', (err) => {
+            Logger.Err('Express startup error:\n' + err);
         });
     }
 
