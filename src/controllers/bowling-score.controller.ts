@@ -44,7 +44,7 @@ export class BowlingScoreController {
 
             return res.status(StatusCodes.OK).json(scoreCardDto);
         } catch (err) {
-            return this.handleError(err, res);
+            return this.handleError(err as Error, res);
         }
     }
 

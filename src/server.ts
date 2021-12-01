@@ -30,7 +30,15 @@ export class ApiServer extends OvernightServer {
     private setupExpress(): void {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
-        this.app.use('/' + Environment.getInstance().apiPrefix + 'api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+        this.app.use(this.getSwaggerRoute(), swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+    }
+
+    private getSwaggerRoute(): string {
+        const swaggerRoute: string = '/' + Environment.getInstance().apiPrefix + 'api-docs';
+
+        Logger.Imp('Swagger Route: ' + swaggerRoute);
+
+        return swaggerRoute;
     }
 
     /**
