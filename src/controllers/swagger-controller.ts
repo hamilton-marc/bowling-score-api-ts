@@ -16,6 +16,7 @@ export class SwaggerController {
     @Get()
 //  @Middleware(swaggerUi.setup(swaggerDocument))
     public getMessage(req: Request, res: Response): Response {
-        return res.send("<h1>Test Message</h1>").status(StatusCodes.OK);
+//      return res.status(StatusCodes.OK).send("<h1>Test Message</h1>");
+        return res.status(StatusCodes.OK).json({ status: 'pass' });
     }
 }
