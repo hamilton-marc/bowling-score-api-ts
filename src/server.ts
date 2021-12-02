@@ -34,8 +34,8 @@ export class ApiServer extends OvernightServer {
     private setupExpress(): void {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
-        this.app.use('/.netlify/functions/api-docs', swaggerUi.serve);
-//      this.app.use(this.getSwaggerRoute(), swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+//      this.app.use('/.netlify/functions/api-docs', swaggerUi.serve);
+//      this.app.use(this.getSwaggerRoute(), swaggerUi.serve);
 //      express.Router().use('/netlify', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
     }
 

@@ -14,8 +14,8 @@ import Logger from 'jet-logger';
 @Controller(Environment.getInstance().apiPrefix + 'api-docs')
 export class SwaggerController {
     @Get()
-    @Middleware(swaggerUi.setup(swaggerDocument))
+//  @Middleware(swaggerUi.setup(swaggerDocument))
     public getMessage(req: Request, res: Response): Response {
-        return res.status(StatusCodes.OK);
+        return res.send("<h1>Test Message</h1>").status(StatusCodes.OK);
     }
 }
