@@ -11,7 +11,7 @@ import Logger from 'jet-logger';
  * The format of the JSON corresponds to a proposed standard.
  *
  */
-@Controller(Environment.getInstance().apiPrefix + 'api-docs')
+@Controller(Environment.getInstance().apiPrefix + 'docs')
 export class SwaggerController {
     @Get()
 //  @Middleware(swaggerUi.setup(swaggerDocument))
