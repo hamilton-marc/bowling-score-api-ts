@@ -9,7 +9,7 @@ import { swaggerDocument } from './swagger';
 const expressListRoutes = require('express-list-routes');
 import http from 'http';
 
-import { ApiHealthController, BowlingScoreController } from './controllers';
+import { ApiHealthController, BowlingScoreController, SwaggerController } from './controllers';
 import { Environment } from './environment';
 
 
@@ -34,18 +34,9 @@ export class ApiServer extends OvernightServer {
     private setupExpress(): void {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
-//      this.app.get(this.getSwaggerRoute(), swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-/*
-        this.app.get(this.getSwaggerRoute(), (req, res) => {
-            res.send("<h2>Test Message</h2>");
-        });
-*/
-
-        const router: Router = super.app._router;
-
-        router.get('/.netlify/functions/api-docs', (req, res) => {
-            res.send("<h2>Test Message</h2>");
-        });
+        this.app.use('/.netlify/functions/api-docs', swaggerUi.serve);
+//      this.app.use(this.getSwaggerRoute(), swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+//      express.Router().use('/netlify', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
     }
 
     private getSwaggerRoute(): string {
@@ -69,10 +60,14 @@ export class ApiServer extends OvernightServer {
      private setupControllers(): void {
         const ctlrInstances = [
             new ApiHealthController(),
-            new BowlingScoreController()
+            new BowlingScoreController(),
+            new SwaggerController()
         ];
 
         super.addControllers(ctlrInstances);
+
+      //this.app.get('/.netlify/functions/api-docs', swaggerUi.setup(swaggerDocument));
+
         expressListRoutes(this.app);
     }
 
