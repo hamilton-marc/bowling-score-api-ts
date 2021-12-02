@@ -9,7 +9,7 @@ import Logger from 'jet-logger';
  * The format of the JSON corresponds to a proposed standard.
  *
  */
-@Controller(Environment.getInstance().apiPrefix + 'docs')
+@Controller(Environment.getInstance().apiPrefix + 'api/docs')
 export class SwaggerController {
     @Get()
     public getMessage(req: Request, res: Response): Response {
