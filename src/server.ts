@@ -1,10 +1,9 @@
 import express from 'express';
-import { Router, Application } from 'express';
+import { Application } from 'express';
 import { Server } from 'net';
 import { Server as OvernightServer } from '@overnightjs/core';
 import Logger from 'jet-logger';
-import swaggerUi from 'swagger-ui-express';
-import { swaggerDocument } from './swagger';
+// import swaggerUi from 'swagger-ui-express';
 //import expressListRoutes from 'express-list-routes';
 const expressListRoutes = require('express-list-routes');
 import http from 'http';
@@ -36,7 +35,6 @@ export class ApiServer extends OvernightServer {
         this.app.use(express.urlencoded({ extended: true }));
 //      this.app.use('/.netlify/functions/api-docs', swaggerUi.serve);
 //      this.app.use(this.getSwaggerRoute(), swaggerUi.serve);
-//      express.Router().use('/netlify', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
     }
 
     private getSwaggerRoute(): string {
