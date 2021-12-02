@@ -21,6 +21,7 @@ export class Environment {
     }
 
     public get apiPrefix(): string {
+        return '.netlify/functions/';
         return this.isNetlify ? '.netlify/functions/' : '';
     }
 }

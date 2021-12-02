@@ -34,7 +34,20 @@ export class ApiServer extends OvernightServer {
     private setupExpress(): void {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
-        this.app.get(this.getSwaggerRoute(), swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+//      this.app.get(this.getSwaggerRoute(), swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+/*
+        this.app.get(this.getSwaggerRoute(), (req, res) => {
+            res.send("<h2>Test Message</h2>");
+        });
+*/
+        this.app.get('/.netlify/functions/api-docs', (req, res) => {
+            res.send("<h2>Test Message</h2>");
+        });
+
+        this.app.get('/', (req, res) => {
+            res.send("<h2>Test Message</h2>");
+        });
+
     }
 
     private getSwaggerRoute(): string {
@@ -44,7 +57,7 @@ export class ApiServer extends OvernightServer {
             apiPrefix = '\\' + apiPrefix;
         }
 
-        const swaggerRoute: string = '/' + apiPrefix + 'docs';
+        const swaggerRoute: string = '/' + apiPrefix + 'api-docs';
 
         Logger.Imp('Swagger Route: ' + swaggerRoute);
 
