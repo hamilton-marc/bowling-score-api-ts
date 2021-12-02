@@ -3,7 +3,7 @@ import { Application } from 'express';
 import { Server } from 'net';
 import { Server as OvernightServer } from '@overnightjs/core';
 import Logger from 'jet-logger';
-// import swaggerUi from 'swagger-ui-express';
+import swaggerUi from 'swagger-ui-express';
 //import expressListRoutes from 'express-list-routes';
 const expressListRoutes = require('express-list-routes');
 import http from 'http';
@@ -34,17 +34,17 @@ export class ApiServer extends OvernightServer {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
 //      this.app.use('/.netlify/functions/api-docs', swaggerUi.serve);
-//      this.app.use(this.getSwaggerRoute(), swaggerUi.serve);
+        this.app.use(this.getSwaggerRoute(), swaggerUi.serve);
     }
 
     private getSwaggerRoute(): string {
         let apiPrefix = Environment.getInstance().apiPrefix;
-
+/*
         if (apiPrefix.startsWith('.')) {
             apiPrefix = '\\' + apiPrefix;
         }
-
-        const swaggerRoute: string = '/' + apiPrefix + 'api-docs';
+*/
+        const swaggerRoute: string = '/' + apiPrefix + 'api/docs';
 
         Logger.Imp('Swagger Route: ' + swaggerRoute);
 
