@@ -1,5 +1,5 @@
 import express from 'express';
-import { Application } from 'express';
+import { Router, Application } from 'express';
 import { Server } from 'net';
 import { Server as OvernightServer } from '@overnightjs/core';
 import Logger from 'jet-logger';
@@ -40,14 +40,12 @@ export class ApiServer extends OvernightServer {
             res.send("<h2>Test Message</h2>");
         });
 */
-        this.app.get('/.netlify/functions/api-docs', (req, res) => {
+
+        const router: Router = super.app._router;
+
+        router.get('/.netlify/functions/api-docs', (req, res) => {
             res.send("<h2>Test Message</h2>");
         });
-
-        this.app.get('/', (req, res) => {
-            res.send("<h2>Test Message</h2>");
-        });
-
     }
 
     private getSwaggerRoute(): string {
