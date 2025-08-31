@@ -35,6 +35,7 @@
     "jest-express": "^1.12.0",
     "jest-runner-groups": "^2.1.0",
     "nodemon": "^2.0.7",
+    "rimraf": "^6.0.1",
     "ts-jest": "^27.0.3",
     "ts-node": "^10.0.0",
     "typed-rest-client": "^1.8.4",
