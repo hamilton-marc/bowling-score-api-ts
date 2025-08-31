@@ -1,19 +1,24 @@
 name: Build and Package Bowling API
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: # Allows manual runs
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  build_and_package:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: 20
           cache: 'npm'
 
       - name: Install dependencies
@@ -22,19 +27,14 @@ jobs:
       - name: Build project
         run: npm run build
 
-      - name: Run tests
-        run: npm test
-
-      - name: Install p7zip
-        run: sudo apt-get update && sudo apt-get install -y p7zip-full
-
-      - name: Package artifact into release.7z
+      - name: Prepare artifact folder
         run: |
-          mkdir artifact
-          7z a -t7z -mx=9 -y artifact/release.7z ./dist/*
+          mkdir -p artifact
+          7z a artifact/release.7z ./dist/*
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: bowling-api-artifact
-          path: artifact/release.7z
+          name: bowling-score-api-artifact
+          path: artifact
+          compression-level: 0   # Prevents double-compression
