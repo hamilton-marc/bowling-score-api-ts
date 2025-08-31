@@ -1,0 +1,40 @@
+name: Build and Package Bowling API
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build_and_package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Run tests
+        run: npm test
+
+      - name: Install p7zip
+        run: sudo apt-get update && sudo apt-get install -y p7zip-full
+
+      - name: Package artifact into release.7z
+        run: |
+          mkdir artifact
+          7z a -t7z -mx=9 -y artifact/release.7z ./dist/*
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: bowling-api-artifact
+          path: artifact/release.7z
